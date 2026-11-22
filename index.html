@@ -11,7 +11,7 @@
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/cover.css?v=c11f5278">
-  <link rel="stylesheet" href="assets/video-learning.css?v=60e8b07e">
+  <link rel="stylesheet" href="assets/video-learning.css?v=afab6a6f">
   <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
   <script defer src="assets/benchmark-scene.js?v=2ba63d20"></script>
@@ -102,38 +102,40 @@
       </div>
     </section>
     <section class="band section" id="abstract" aria-labelledby="video-learning-title">
-      <div class="wrap"><div class="section-head"><p class="eyebrow">Abstract</p><h2 id="video-learning-title">Learning actions from video</h2><p>As the robot opens the pot, the table stays still while the gripper and lid move. A temporal high-pass prior guides FreshVLA’s attention toward these changing regions, even when the video has no action labels.</p></div>
-        <figure class="figure video-reading" aria-labelledby="video-reading-caption">
-          <figcaption class="video-reading-caption" id="video-reading-caption">
-            <div><h3>Opening a pot</h3><p>Selected frames from a Flexiv robot rollout</p></div>
-            <a href="assets/figures/rollout-pot.webp" data-zoom data-caption="Four selected frames from the Open Pot rollout" class="video-enlarge">Enlarge frames <svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></a>
-          </figcaption>
-          <ol class="video-frames" aria-label="Open Pot sequence">
-            <li><img src="assets/figures/rollout-pot.webp" loading="lazy" width="1708" height="311" alt="The gripper hovers over the covered pot."><span>Approach</span></li>
-            <li><img src="assets/figures/rollout-pot.webp" loading="lazy" width="1708" height="311" alt="The gripper closes around the lid handle."><span>Grasp</span></li>
-            <li><img src="assets/figures/rollout-pot.webp" loading="lazy" width="1708" height="311" alt="The gripper holds the lid clear of the pot."><span>Lift</span></li>
-            <li><img src="assets/figures/rollout-pot.webp" loading="lazy" width="1708" height="311" alt="The open gripper is above the pot, and the lid rests on the table."><span>Release</span></li>
-          </ol>
-          <div class="video-window">
-            <h4>Inside a 36-frame training window</h4>
-            <div class="video-scales">
-              <div class="video-scale">
-                <div class="video-scale-label"><h5>Substage scale</h5><span>6 substages</span></div>
-                <div class="video-segments" aria-hidden="true"></div>
-                <p>Tracks progress over a longer interval, such as lifting the lid clear of the pot.</p>
+      <div class="wrap"><div class="section-head"><p class="eyebrow">Abstract</p><h2 id="video-learning-title">Learning actions from video</h2><p>FreshVLA learns from videos without action labels by tracking where the scene changes and how those changes unfold over time.</p></div>
+        <figure class="figure video-reading" aria-label="How FreshVLA learns latent actions and transfers them to a policy">
+          <div class="learning-diagrams">
+            <div class="learning-panel">
+              <h3>Where does motion occur?</h3>
+              <div class="patch-sequence" role="img" aria-label="Schematic of two frames and a temporal high-pass prior. A blue block moves across the grid. The prior highlights patches along its path, while the stationary ring fades into the background.">
+                <div class="patch-example"><div class="patch-grid"><i class="fixed-ring"></i><i class="moving-block"></i></div><span>Earlier frame</span></div>
+                <div class="patch-example"><div class="patch-grid"><i class="fixed-ring"></i><i class="moving-block later"></i></div><span>Later frame</span></div>
+                <div class="patch-example"><div class="patch-grid prior-grid"><i class="patch-response"></i></div><span>High-pass prior</span></div>
               </div>
-              <div class="video-scale">
-                <div class="video-scale-label"><h5>Execution scale</h5><span>35 transitions</span></div>
-                <div class="video-segments video-segments-fine" aria-hidden="true"></div>
-                <p>Captures local motion between neighboring frames, such as the gripper closing around the handle.</p>
+              <p>The temporal high-pass response across the video guides DynaAdapter’s attention toward patches that change.</p>
+            </div>
+            <div class="learning-panel">
+              <h3>How does motion unfold?</h3>
+              <div class="time-tracks" role="img" aria-label="A 36-frame window divided into 6 coarse intervals above and 35 adjacent-frame transitions below, on the same time axis.">
+                <div class="track-label"><strong>Substage scale</strong><span>6 intervals</span></div>
+                <div class="coarse-track" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="track-label"><strong>Execution scale</strong><span>35 transitions</span></div>
+                <div class="fine-track"></div>
+                <div class="time-axis"><span>Frame 1</span><span>Frame 36</span></div>
               </div>
+              <p>The substage stream tracks task progress, and the execution stream captures the remaining local motion. Their normalized sum gives a latent action.</p>
             </div>
           </div>
+          <figcaption class="policy-transfer">
+            <h3>From video to control</h3>
+            <div class="policy-inputs">
+              <span><i aria-hidden="true"></i>Latent targets <small>from the frozen encoder</small></span>
+              <span><i aria-hidden="true"></i>Robot actions <small>from demonstrations</small></span>
+            </div>
+            <div class="policy-merge" aria-hidden="true"></div>
+            <p><strong>Joint flow matching</strong>One policy learns to generate both sequences, conditioned on the observation, instruction and robot state.</p>
+          </figcaption>
         </figure>
-        <div class="prose video-findings">
-          <p>During policy training, the pretrained encoder is frozen. Its latent actions provide targets for a flow-matching policy that learns to predict latent actions and robot commands together.</p>
-          <p>With 2.5 billion parameters, FreshVLA achieves <strong>98.2%</strong> average success on LIBERO and <strong>80.4%</strong> on zero-shot LIBERO-PLUS. Across four physical robot tasks, its average success rate exceeds π<sub>0.5</sub> by <strong>7.5 percentage points</strong>.</p>
-        </div>
       </div>
     </section>
     <section class="section" id="method">
