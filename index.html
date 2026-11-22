@@ -11,7 +11,10 @@
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/cover.css?v=c11f5278">
+  <link rel="stylesheet" href="assets/video-learning.css?v=60e8b07e">
+  <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
+  <script defer src="assets/benchmark-scene.js?v=2ba63d20"></script>
   <script defer src="assets/cover-motion.js?v=427b3ac6"></script>
 </head>
 <body id="top" class="research-cover">
@@ -98,12 +101,38 @@
         </figure>
       </div>
     </section>
-    <section class="band section" id="abstract">
-      <div class="wrap"><div class="section-head"><p class="eyebrow">Abstract</p><h2>Learning actions from video</h2></div>
-        <div class="prose">
-          <p>In a video of a robot stacking bowls, the drawer and table appear in every frame. The brief moment when the gripper touches a bowl tells us more about the action. Learning from video requires identifying those changes and connecting them over time.</p>
-          <p>FreshVLA uses a temporal high-pass prior to direct attention toward regions that change during manipulation. It learns continuous latent actions at two timescales. One tracks progress through a task, while the other captures local changes during execution. A frozen encoder then supplies latent targets for a flow-matching policy that learns to generate robot actions.</p>
-          <p>With 2.5 billion parameters, FreshVLA achieves 98.2% average success on LIBERO and 80.4% on zero-shot LIBERO-PLUS. Across four tasks on a physical robot, it improves average success by 7.5 percentage points over π<sub>0.5</sub>.</p>
+    <section class="band section" id="abstract" aria-labelledby="video-learning-title">
+      <div class="wrap"><div class="section-head"><p class="eyebrow">Abstract</p><h2 id="video-learning-title">Learning actions from video</h2><p>As the robot opens the pot, the table stays still while the gripper and lid move. A temporal high-pass prior guides FreshVLA’s attention toward these changing regions, even when the video has no action labels.</p></div>
+        <figure class="figure video-reading" aria-labelledby="video-reading-caption">
+          <figcaption class="video-reading-caption" id="video-reading-caption">
+            <div><h3>Opening a pot</h3><p>Selected frames from a Flexiv robot rollout</p></div>
+            <a href="assets/figures/rollout-pot.webp" data-zoom data-caption="Four selected frames from the Open Pot rollout" class="video-enlarge">Enlarge frames <svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></a>
+          </figcaption>
+          <ol class="video-frames" aria-label="Open Pot sequence">
+            <li><img src="assets/figures/rollout-pot.webp" loading="lazy" width="1708" height="311" alt="The gripper hovers over the covered pot."><span>Approach</span></li>
+            <li><img src="assets/figures/rollout-pot.webp" loading="lazy" width="1708" height="311" alt="The gripper closes around the lid handle."><span>Grasp</span></li>
+            <li><img src="assets/figures/rollout-pot.webp" loading="lazy" width="1708" height="311" alt="The gripper holds the lid clear of the pot."><span>Lift</span></li>
+            <li><img src="assets/figures/rollout-pot.webp" loading="lazy" width="1708" height="311" alt="The open gripper is above the pot, and the lid rests on the table."><span>Release</span></li>
+          </ol>
+          <div class="video-window">
+            <h4>Inside a 36-frame training window</h4>
+            <div class="video-scales">
+              <div class="video-scale">
+                <div class="video-scale-label"><h5>Substage scale</h5><span>6 substages</span></div>
+                <div class="video-segments" aria-hidden="true"></div>
+                <p>Tracks progress over a longer interval, such as lifting the lid clear of the pot.</p>
+              </div>
+              <div class="video-scale">
+                <div class="video-scale-label"><h5>Execution scale</h5><span>35 transitions</span></div>
+                <div class="video-segments video-segments-fine" aria-hidden="true"></div>
+                <p>Captures local motion between neighboring frames, such as the gripper closing around the handle.</p>
+              </div>
+            </div>
+          </div>
+        </figure>
+        <div class="prose video-findings">
+          <p>During policy training, the pretrained encoder is frozen. Its latent actions provide targets for a flow-matching policy that learns to predict latent actions and robot commands together.</p>
+          <p>With 2.5 billion parameters, FreshVLA achieves <strong>98.2%</strong> average success on LIBERO and <strong>80.4%</strong> on zero-shot LIBERO-PLUS. Across four physical robot tasks, its average success rate exceeds π<sub>0.5</sub> by <strong>7.5 percentage points</strong>.</p>
         </div>
       </div>
     </section>
@@ -126,17 +155,36 @@
       </div>
     </section>
     <section class="band section" id="results">
-      <div class="wrap"><div class="section-head"><p class="eyebrow">Results</p><h2>Manipulation across benchmarks</h2><p>Compare task success in simulation, under seven kinds of distribution shift, and on the physical robot.</p></div>
-        <div class="tabs results-tabs" data-tabs>
-  <div class="tablist" aria-label="Benchmark">
-    <button type="button" data-tab="sim-results">Simulation</button>
-    <button type="button" data-tab="plus-results">LIBERO-PLUS</button>
-    <button type="button" data-tab="robot-results">Real robot</button>
-  </div>
-  <div class="tab-panel" id="sim-results">
-    <div class="table-scroll" tabindex="0" role="region" aria-label="Simulation results">
+      <div class="wrap"><div class="section-head"><p class="eyebrow">Results</p><h2>Manipulation across benchmarks</h2><p>Select a simulation scene to explore the results.</p></div>
+        <div class="results-tabs benchmark-explorer">
+          <svg class="benchmark-defs" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="slice-libero" clipPathUnits="objectBoundingBox"><path transform="scale(2.5 1)" d="M0 0H.31C.397 .22 .404 .70 .30 1H0Z"/></clipPath>
+              <clipPath id="slice-plus" clipPathUnits="objectBoundingBox"><path transform="scale(2.222222 1) translate(-.29)" d="M.31 0H.65C.737 .22 .744 .70 .64 1H.30C.404 .70 .397 .22 .31 0Z"/></clipPath>
+              <clipPath id="slice-calvin" clipPathUnits="objectBoundingBox"><path transform="scale(2.702703 1) translate(-.63)" d="M.65 0H1V1H.64C.744 .70 .737 .22 .65 0Z"/></clipPath>
+            </defs>
+          </svg>
+          <div class="benchmark-gallery" role="group" aria-label="Simulation benchmarks">
+            <a class="benchmark-slice libero" data-benchmark href="#sim-results" aria-label="LIBERO results" aria-description="The standard LIBERO tabletop scene.">
+              <img src="assets/figures/bench-libero.webp" alt="" loading="lazy" decoding="async">
+              <span class="benchmark-label"><small>Four task suites</small><strong>LIBERO</strong></span>
+            </a>
+            <a class="benchmark-slice libero-plus" data-benchmark href="#plus-results" aria-label="LIBERO-PLUS results" aria-description="The same robot pose with a changed background.">
+              <img src="assets/figures/bench-libero-plus.webp" alt="" loading="lazy" decoding="async">
+              <span class="benchmark-label"><small>Background shift</small><strong>LIBERO-PLUS</strong></span>
+            </a>
+            <a class="benchmark-slice calvin" data-benchmark href="#calvin-results" aria-label="CALVIN results" aria-description="A CALVIN robot grasping a red block.">
+              <img src="assets/figures/bench-calvin.webp" alt="" loading="lazy" decoding="async">
+              <span class="benchmark-label"><small>1–5 subtasks</small><strong>CALVIN</strong></span>
+            </a>
+            <svg class="benchmark-seams" aria-hidden="true" focusable="false" viewBox="0 0 1000 1000" preserveAspectRatio="none"><path d="M310 0C397 220 404 700 300 1000M650 0C737 220 744 700 640 1000"/></svg>
+          </div>
+          <div class="benchmark-secondary"><a class="benchmark-robot-trigger" data-benchmark href="#robot-results"><svg class="icon" aria-hidden="true"><use href="#i-results"></use></svg>Real robot results</a></div>
+  <div class="benchmark-panel" id="sim-results" role="region" aria-labelledby="bench-libero-title">
+    <h3 id="bench-libero-title">LIBERO</h3>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="LIBERO results">
       <table>
-        <caption>LIBERO reports success rates (%). CALVIN reports the mean number of consecutive subtasks completed out of five.</caption>
+        <caption>Task success rates (%) across four LIBERO suites.</caption>
         <thead>
           <tr>
             <th scope="col">Method</th>
@@ -145,31 +193,32 @@
             <th scope="col">Goal</th>
             <th scope="col">Long</th>
             <th scope="col">LIBERO avg.</th>
-            <th scope="col">CALVIN len.</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">OpenVLA-OFT</th>
-            <td>96.2</td><td>98.3</td><td>96.2</td><td>90.7</td><td>95.3</td><td>4.10</td>
+            <td>96.2</td><td>98.3</td><td>96.2</td><td>90.7</td><td>95.3</td>
           </tr>
           <tr>
             <th scope="row">π<sub>0.5</sub></th>
-            <td>98.8</td><td>98.2</td><td>98.0</td><td>92.4</td><td>96.9</td><td>4.26</td>
+            <td>98.8</td><td>98.2</td><td>98.0</td><td>92.4</td><td>96.9</td>
           </tr>
           <tr>
             <th scope="row">GR00T-N1.6</th>
-            <td>97.7</td><td>98.5</td><td>97.5</td><td>94.4</td><td>97.0</td><td>4.24</td>
+            <td>97.7</td><td>98.5</td><td>97.5</td><td>94.4</td><td>97.0</td>
           </tr>
           <tr class="ours">
             <th scope="row">FreshVLA</th>
-            <td>98.7</td><td>99.7</td><td>96.3</td><td>98.0</td><td>98.2</td><td>4.52</td>
+            <td>98.7</td><td>99.7</td><td>96.3</td><td>98.0</td><td>98.2</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <p class="callout">On LIBERO-Long, FreshVLA reaches 98.0% success, 3.6 percentage points above GR00T-N1.6.</p>
   </div>
-  <div class="tab-panel" id="plus-results">
+  <div class="benchmark-panel" id="plus-results" role="region" aria-labelledby="bench-plus-title">
+    <h3 id="bench-plus-title">LIBERO-PLUS</h3>
     <div class="table-scroll" tabindex="0" role="region" aria-label="LIBERO-PLUS results">
       <table>
         <caption>Zero-shot success rates (%) across seven perturbation categories.</caption>
@@ -203,7 +252,23 @@
       </table>
     </div>
   </div>
-  <div class="tab-panel" id="robot-results">
+  <div class="benchmark-panel" id="calvin-results" role="region" aria-labelledby="bench-calvin-title">
+    <h3 id="bench-calvin-title">CALVIN</h3>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="CALVIN results">
+      <table>
+        <caption>Success rates (%) for completing 1–5 consecutive subtasks and mean sequence length (out of 5).</caption>
+        <thead><tr><th scope="col">Method</th><th scope="col">1 task</th><th scope="col">2 tasks</th><th scope="col">3 tasks</th><th scope="col">4 tasks</th><th scope="col">5 tasks</th><th scope="col">Mean length</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">OpenVLA-OFT</th><td>96.3</td><td>89.1</td><td>82.4</td><td>75.8</td><td>66.5</td><td>4.10</td></tr>
+          <tr><th scope="row">π<sub>0.5</sub></th><td>94.4</td><td>88.4</td><td>85.3</td><td>80.1</td><td>76.1</td><td>4.26</td></tr>
+          <tr><th scope="row">GR00T-N1.6</th><td>96.3</td><td>91.4</td><td>85.3</td><td>79.7</td><td>71.7</td><td>4.24</td></tr>
+          <tr class="ours"><th scope="row">FreshVLA</th><td>99.6</td><td>97.9</td><td>92.4</td><td>85.1</td><td>77.5</td><td>4.52</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="benchmark-panel" id="robot-results" role="region" aria-labelledby="bench-robot-title">
+    <h3 id="bench-robot-title">Real robot</h3>
     <div class="table-scroll" tabindex="0" role="region" aria-label="Real robot results">
       <table>
         <caption>Task success rates (%) on the Flexiv tabletop setup.</caption>
@@ -243,7 +308,6 @@
     </div>
   </div>
 </div>
-        <p class="callout">On LIBERO-Long, FreshVLA reaches 98.0% success, 3.6 percentage points above GR00T-N1.6.</p>
       </div>
     </section>
     <section class="section robot-section" id="real-robot" aria-labelledby="robot-title">
