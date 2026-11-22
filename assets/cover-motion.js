@@ -3,7 +3,7 @@
   const nav = document.querySelector('.nav');
   const main = document.querySelector('main');
   const blocks = [...main.querySelectorAll([
-    '.photo-cover', '.paper-details', '.timescale-layout > *', '.section-head',
+    '.photo-cover', '.timescale-layout > *', '.section-head',
     '.prose', '.figure', '.pipeline > article', '.stats > div', '.results-tabs',
     '.callout', '.rollouts', '.resources > article', '.citation'
   ].join(','))];
