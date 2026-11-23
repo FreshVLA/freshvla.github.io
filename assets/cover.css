@@ -219,8 +219,10 @@
   .streams div {grid-template-columns:122px minmax(0,1fr);gap:8px}
   .streams dt {font-size:.82rem}
 }
+@media(max-width:440px) {
+  .paper-details .actions {max-width:290px;margin-inline:auto}
+}
 @media(max-width:360px) {
   .probe {padding:14px}
   .probe-measure {grid-template-columns:60px 1fr 4.8ch;gap:7px}
-  .paper-details .actions {display:grid;grid-template-columns:repeat(2,max-content)}
 }

@@ -10,8 +10,8 @@
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
-  <link rel="stylesheet" href="assets/cover.css?v=c11f5278">
-  <link rel="stylesheet" href="assets/video-learning.css?v=afab6a6f">
+  <link rel="stylesheet" href="assets/cover.css?v=c4e2bfbb">
+  <link rel="stylesheet" href="assets/video-learning.css?v=86e5f433">
   <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
   <script defer src="assets/benchmark-scene.js?v=2ba63d20"></script>
@@ -38,7 +38,7 @@
         <a href="#timescales">Overview</a><a href="#abstract">Abstract</a><a href="#method">Method</a><a href="#results">Results</a><a href="#real-robot">Real robot</a><a href="#resources">Resources</a><a href="#bibtex">BibTeX</a>
       </div>
       <div class="nav-tools">
-        <a class="icon-button source" href="https://github.com/FreshVLA/freshvla.github.io" aria-label="Project page source on GitHub" title="Project page source on GitHub"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg></a>
+        <a class="icon-button source" href="https://github.com/FreshVLA/FreshVLA" aria-label="FreshVLA code on GitHub" title="FreshVLA code on GitHub"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg></a>
         <button class="icon-button js-only" type="button" id="theme" aria-label="Dark mode" aria-pressed="false" title="Dark mode"><svg class="icon" aria-hidden="true"><use href="#i-moon"></use></svg></button>
         <button class="icon-button menu js-only" type="button" id="menu" aria-label="Navigation menu" aria-expanded="false" aria-controls="nav-links"><svg class="icon" aria-hidden="true"><use href="#i-menu"></use></svg></button>
       </div>
@@ -61,7 +61,13 @@
           </p>
           <div class="affiliations"><span><sup>1</sup>The Hong Kong University of Science and Technology (Guangzhou)</span><span><sup>2</sup>XPENG Robotics</span><br class="desktop-break"><span><sup>3</sup>Shanghai Institute of Intelligent Science and Technology, Tongji University</span><span><sup>4</sup>City University of Hong Kong</span></div>
           <p class="roles"><span>* Equal contribution</span><span>† Project lead</span><span>‡ Corresponding author</span></p>
-          <div class="actions"><a class="btn primary" href="assets/FreshVLA.pdf"><svg class="icon" aria-hidden="true"><use href="#i-paper"></use></svg> Paper</a><a class="btn" href="#real-robot"><svg class="icon" aria-hidden="true"><use href="#i-film"></use></svg> Real robot</a><a class="btn" href="#results"><svg class="icon" aria-hidden="true"><use href="#i-results"></use></svg> Results</a><a class="btn" href="#bibtex"><svg class="icon" aria-hidden="true"><use href="#i-cite"></use></svg> BibTeX</a></div>
+          <div class="actions">
+            <a class="btn primary" href="assets/FreshVLA.pdf"><svg class="icon" aria-hidden="true"><use href="#i-paper"></use></svg> Paper</a>
+            <a class="btn" href="https://github.com/FreshVLA/FreshVLA"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg> Code</a>
+            <a class="btn" href="#real-robot"><svg class="icon" aria-hidden="true"><use href="#i-film"></use></svg> Real robot</a>
+            <a class="btn" href="#results"><svg class="icon" aria-hidden="true"><use href="#i-results"></use></svg> Results</a>
+            <a class="btn" href="#bibtex"><svg class="icon" aria-hidden="true"><use href="#i-cite"></use></svg> BibTeX</a>
+          </div>
         </div>
       </div>
     </header>
@@ -102,20 +108,25 @@
       </div>
     </section>
     <section class="band section" id="abstract" aria-labelledby="video-learning-title">
-      <div class="wrap"><div class="section-head"><p class="eyebrow">Abstract</p><h2 id="video-learning-title">Learning actions from video</h2><p>FreshVLA learns from videos without action labels by tracking where the scene changes and how those changes unfold over time.</p></div>
+      <div class="wrap"><div class="section-head"><p class="eyebrow">Abstract</p><h2 id="video-learning-title">Learning actions from video</h2><p>A video can show how an object moves without recording the command that moved it. FreshVLA learns to represent those visual changes, then uses robot demonstrations to connect them to control.</p></div>
         <figure class="figure video-reading" aria-label="How FreshVLA learns latent actions and transfers them to a policy">
           <div class="learning-diagrams">
-            <div class="learning-panel">
+            <div class="learning-panel" id="analysis">
               <h3>Where does motion occur?</h3>
-              <div class="patch-sequence" role="img" aria-label="Schematic of two frames and a temporal high-pass prior. A blue block moves across the grid. The prior highlights patches along its path, while the stationary ring fades into the background.">
-                <div class="patch-example"><div class="patch-grid"><i class="fixed-ring"></i><i class="moving-block"></i></div><span>Earlier frame</span></div>
-                <div class="patch-example"><div class="patch-grid"><i class="fixed-ring"></i><i class="moving-block later"></i></div><span>Later frame</span></div>
-                <div class="patch-example"><div class="patch-grid prior-grid"><i class="patch-response"></i></div><span>High-pass prior</span></div>
-              </div>
-              <p>The temporal high-pass response across the video guides DynaAdapter’s attention toward patches that change.</p>
+              <p>A static tabletop makes much of the next frame predictable, even if a model misses a small gripper movement. FreshVLA uses a temporal high-pass prior to guide DynaAdapter’s attention toward image patches that change.</p>
+              <figure class="attention-comparison">
+                <a class="attention-link" href="assets/figures/attention.webp" data-zoom aria-label="Enlarge the comparison of spatial attention across six consecutive frames">
+                  <span class="attention-sheet"><img width="2050" height="453" src="assets/figures/attention.webp" loading="lazy" alt="Attention maps from FreshVLA, LAPA, UniVLA and V-JEPA 2.1 over the same six frames. FreshVLA follows the object as it moves with the gripper."></span>
+                  <span class="attention-zoom">Enlarge figure <svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></span>
+                </a>
+                <figcaption>Across these six frames, FreshVLA’s attention follows the object as it moves with the gripper. LAPA and UniVLA shift focus between frames, while V-JEPA 2.1 also attends to the background.</figcaption>
+              </figure>
             </div>
-            <div class="learning-panel">
-              <h3>How does motion unfold?</h3>
+            <div class="learning-panel temporal-panel">
+              <div>
+                <h3>How does motion unfold?</h3>
+                <p>Carrying an object across the workspace takes many frames. A small adjustment of the grasp can happen between two. The substage stream captures slower task progress, guided by a low-frequency objective. The execution stream encodes the motion left at each step.</p>
+              </div>
               <div class="time-tracks" role="img" aria-label="A 36-frame window divided into 6 coarse intervals above and 35 adjacent-frame transitions below, on the same time axis.">
                 <div class="track-label"><strong>Substage scale</strong><span>6 intervals</span></div>
                 <div class="coarse-track" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -123,7 +134,6 @@
                 <div class="fine-track"></div>
                 <div class="time-axis"><span>Frame 1</span><span>Frame 36</span></div>
               </div>
-              <p>The substage stream tracks task progress, and the execution stream captures the remaining local motion. Their normalized sum gives a latent action.</p>
             </div>
           </div>
           <figcaption class="policy-transfer">
@@ -133,7 +143,7 @@
               <span><i aria-hidden="true"></i>Robot actions <small>from demonstrations</small></span>
             </div>
             <div class="policy-merge" aria-hidden="true"></div>
-            <p><strong>Joint flow matching</strong>One policy learns to generate both sequences, conditioned on the observation, instruction and robot state.</p>
+            <p><strong>Joint flow matching</strong>Freezing the encoder keeps the video-derived targets stable while the policy learns to generate latent actions and robot commands together.</p>
           </figcaption>
         </figure>
       </div>
@@ -343,11 +353,6 @@
         </div>
       </div>
     </section>
-    <section class="section band" id="analysis">
-      <div class="wrap"><div class="section-head"><p class="eyebrow">Qualitative analysis</p><h2>Where the model looks</h2><p>Attention maps from successive frames show how each encoder follows the interaction between the gripper and the object.</p></div>
-        <figure class="figure"><a class="figure-link" href="assets/figures/attention.webp" data-zoom><img width="2050" height="453" src="assets/figures/attention.webp" loading="lazy" alt="Attention maps from four encoders over the same tabletop manipulation sequence, with FreshVLA at top left."><span class="zoom-icon"><svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></span></a><figcaption>In the paper’s qualitative comparison, FreshVLA attends more consistently to the gripper–object interaction over time.</figcaption></figure>
-      </div>
-    </section>
     <section class="section" id="resources">
       <div class="wrap"><div class="section-head"><p class="eyebrow">Resources</p><h2>Paper and figures</h2></div>
         <div class="resources">
@@ -372,7 +377,7 @@
       </div>
     </section>
   </main>
-  <footer><div class="wrap footer-inner"><a class="logo" href="#top" aria-label="FreshVLA home"><span class="c1">F</span><span class="c2">r</span><span class="c3">e</span><span class="c4">s</span><span class="c5">h</span>VLA</a><div><a href="assets/FreshVLA.pdf">Paper</a><a href="#bibtex">BibTeX</a><a href="#top">Back to top</a></div></div></footer>
+  <footer><div class="wrap footer-inner"><a class="logo" href="#top" aria-label="FreshVLA home"><span class="c1">F</span><span class="c2">r</span><span class="c3">e</span><span class="c4">s</span><span class="c5">h</span>VLA</a><div><a href="assets/FreshVLA.pdf">Paper</a><a href="#bibtex">BibTeX</a><a href="https://github.com/FreshVLA/freshvla.github.io">Page source</a><a href="#top">Back to top</a></div></div></footer>
   <dialog id="lightbox" aria-label="Enlarged figure"><button type="button" class="lightbox-close" aria-label="Close enlarged figure">×</button><img alt=""></dialog>
 </body>
 </html>
