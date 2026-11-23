@@ -11,7 +11,7 @@
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/cover.css?v=c4e2bfbb">
-  <link rel="stylesheet" href="assets/video-learning.css?v=86e5f433">
+  <link rel="stylesheet" href="assets/video-learning.css?v=7a61aa48">
   <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
   <script defer src="assets/benchmark-scene.js?v=2ba63d20"></script>
@@ -112,8 +112,17 @@
         <figure class="figure video-reading" aria-label="How FreshVLA learns latent actions and transfers them to a policy">
           <div class="learning-diagrams">
             <div class="learning-panel" id="analysis">
-              <h3>Where does motion occur?</h3>
-              <p>A static tabletop makes much of the next frame predictable, even if a model misses a small gripper movement. FreshVLA uses a temporal high-pass prior to guide DynaAdapter’s attention toward image patches that change.</p>
+              <div class="motion-intro">
+                <div>
+                  <h3>Where does motion occur?</h3>
+                  <p>A static tabletop makes much of the next frame predictable, even if a model misses a small gripper movement. FreshVLA uses a temporal high-pass prior to guide DynaAdapter’s attention toward image patches that change.</p>
+                </div>
+                <div class="patch-sequence" role="img" aria-label="Schematic of two frames and a temporal high-pass prior. A blue block moves across the grid. The prior highlights patches along its path, while the stationary ring fades into the background.">
+                  <div class="patch-example"><div class="patch-grid"><i class="fixed-ring"></i><i class="moving-block"></i></div><span>Earlier frame</span></div>
+                  <div class="patch-example"><div class="patch-grid"><i class="fixed-ring"></i><i class="moving-block later"></i></div><span>Later frame</span></div>
+                  <div class="patch-example"><div class="patch-grid prior-grid"><i class="patch-response"></i></div><span>High-pass prior</span></div>
+                </div>
+              </div>
               <figure class="attention-comparison">
                 <a class="attention-link" href="assets/figures/attention.webp" data-zoom aria-label="Enlarge the comparison of spatial attention across six consecutive frames">
                   <span class="attention-sheet"><img width="2050" height="453" src="assets/figures/attention.webp" loading="lazy" alt="Attention maps from FreshVLA, LAPA, UniVLA and V-JEPA 2.1 over the same six frames. FreshVLA follows the object as it moves with the gripper."></span>
@@ -133,6 +142,21 @@
                 <div class="track-label"><strong>Execution scale</strong><span>35 transitions</span></div>
                 <div class="fine-track"></div>
                 <div class="time-axis"><span>Frame 1</span><span>Frame 36</span></div>
+              </div>
+              <div class="structure-ablation">
+                <div class="ablation-heading">
+                  <h4 id="structure-ablation-title">Latent action structure</h4>
+                  <a href="assets/FreshVLA.pdf#page=8" aria-label="Read Figure 4 in the paper">Fig. 4 ↗</a>
+                </div>
+                <table class="ablation-matrix" aria-labelledby="structure-ablation-title">
+                  <caption>Average success across four LIBERO suites. Each cell also shows LIBERO-Long.</caption>
+                  <thead><tr><th scope="col">Structure</th><th scope="col">Discrete</th><th scope="col">Continuous</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">Single-layer</th><td><strong>95.0%</strong><small>Long 92.0%</small></td><td><strong>96.0%</strong><small>Long 93.0%</small></td></tr>
+                    <tr><th scope="row">Hierarchical</th><td><strong>88.1%</strong><small>Long 72.3%</small></td><td class="ablation-ours"><strong>98.2%</strong><small>Long 98.0%</small></td></tr>
+                  </tbody>
+                </table>
+                <p>With continuous latents, the two-scale design improves LIBERO-Long success by <strong>5.0 percentage points</strong> over a single layer.</p>
               </div>
             </div>
           </div>
