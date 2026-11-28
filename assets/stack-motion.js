@@ -2,8 +2,8 @@
   const study = document.querySelector('.task-study');
   if (!study) return;
   const button = study.querySelector('.stack-playback');
-  const cursor = study.querySelector('.stack-cursor');
   const selectedPair = study.querySelector('.stack-frame-pair');
+  const [firstSpan, secondSpan] = study.querySelectorAll('.stack-stage-spans use');
   function gripParts(group) {
     return {
       block: group.querySelector('.study-inbetweens'),
@@ -71,14 +71,17 @@
     drawArm(poses[1], sample(Math.max(.34, Math.min(t, .62))));
     drawArm(poses[2], sample(Math.max(t, .62)));
 
-    const frame = Math.min(Math.floor(t * frameSteps), frameSteps - 1);
-    drawGrip(closeups[0], sample(frame / frameSteps));
-    drawGrip(closeups[1], sample((frame + 1) / frameSteps));
-    selectedPair.setAttribute('transform', `translate(${61 + frame * 34})`);
+    // Slide a one-frame window along the same motion as the arm.
+    const interval = 1 / frameSteps;
+    const left = Math.max(0, Math.min(1 - interval, t - interval / 2));
+    drawGrip(closeups[0], sample(left));
+    drawGrip(closeups[1], sample(left + interval));
+    selectedPair.setAttribute('transform', `translate(${61 + 408 * left})`);
+    const blend = ease(t, .475, .525);
+    firstSpan.setAttribute('opacity', 1 - blend);
+    secondSpan.setAttribute('opacity', blend);
     const active = t < .34 ? 0 : t < .62 ? 1 : 2;
     poses.forEach((pose, index) => pose.group.style.opacity = index === active || t === 1 ? '1' : '.48');
-    cursor.setAttribute('visibility', 'visible');
-    cursor.setAttribute('cx', 61 + 408 * t);
   }
 
   function tick(now) {

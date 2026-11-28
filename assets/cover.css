@@ -75,11 +75,15 @@
 .stack-heading {display:flex;align-items:center;justify-content:space-between;gap:8px}
 .stack-playback {flex:none;padding:4px 10px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--soft);font:500 .77rem/1.5 var(--sans)}
 .stack-playback:hover {border-color:var(--detail-ink);color:var(--detail-ink)}
-.task-study header .scale-label {margin:2px 0 4px}
 .scale-label {display:flex;align-items:baseline;gap:9px;color:var(--muted);font:.84rem/1.4 var(--sans)}
 .scale-label strong {color:var(--ink);font-size:.96rem}
 .grasp-detail {margin:2px 0 0;padding-top:5px;border-top:1px solid var(--line);text-align:left}
 .grasp-detail strong {color:var(--detail-ink)}
+.stack-legend {display:flex;align-items:center;flex-wrap:wrap;gap:2px 12px;margin:2px 0 4px;color:var(--soft);font:.8rem/1.4 var(--sans)}
+.stack-legend span {display:inline-flex;align-items:center;gap:5px;color:var(--ink)}
+.stack-legend span::before {content:"";box-sizing:border-box;width:24px;height:5px;border:2px solid currentColor;border-top:0}
+.stack-legend .execution-key {color:var(--detail-ink)}
+.stack-legend .execution-key::before {width:10px}
 .substage-bar {background:var(--substage)}
 .execution-bar {background:var(--execution)}
 .timescale-layout > figure {

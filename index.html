@@ -10,11 +10,11 @@
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
-  <link rel="stylesheet" href="assets/cover.css?v=d93c2754">
+  <link rel="stylesheet" href="assets/cover.css?v=5b5cb2cc">
   <link rel="stylesheet" href="assets/video-learning.css?v=929f2faa">
   <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
-  <script defer src="assets/stack-motion.js?v=4a51c72f"></script>
+  <script defer src="assets/stack-motion.js?v=12c3ead5"></script>
   <script defer src="assets/benchmark-scene.js?v=2ba63d20"></script>
   <script defer src="assets/cover-motion.js?v=427b3ac6"></script>
   <style>
@@ -112,11 +112,14 @@
               <h3 id="blocks-heading">Stacking two blocks</h3>
               <button type="button" class="stack-playback" aria-controls="stack-sequence stack-detail" hidden>Play motion</button>
             </div>
-            <p class="scale-label"><strong>Substage</strong>Across many frames</p>
+            <div class="stack-legend" role="group" aria-labelledby="stack-legend-title">
+              <strong id="stack-legend-title">Legend</strong>
+              <span>Substage</span><span class="execution-key">Execution</span>
+            </div>
           </header>
           <svg id="stack-sequence" viewBox="-30 -27 595 168" role="img" aria-labelledby="task-study-title" aria-describedby="task-study-desc" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <title id="task-study-title">Stacking two blocks at two temporal scales</title>
-            <desc id="task-study-desc">Three illustrative poses show the arm stacking a block. Black dots mark substage anchors. Green ticks show the frames between them. The two bold ticks mark the adjacent frames compared below.</desc>
+            <desc id="task-study-desc">Three poses show the arm stacking a block. The long bracket spans the first two anchors until playback reaches the middle anchor, then switches to the last two. The short green bracket spans the one-frame interval enlarged below.</desc>
             <defs>
               <g id="study-cube" stroke-width="1.8">
                 <rect x="-16" y="-32" width="32" height="32" rx="1.6" fill="color-mix(in srgb,currentColor 15%,var(--surface))"/>
@@ -212,20 +215,22 @@
               <use href="#six-frame-ticks"/><use href="#six-frame-ticks" x="204"/>
               <path d="M469 109v8" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
               <g class="stack-frame-pair" transform="translate(95)">
-                <path d="M0 107v12 M34 107v12" stroke-width="4" vector-effect="non-scaling-stroke"/>
-                <path d="M0 123v4h34v-4" stroke-width="1.8"/>
+                <path d="M0 121v5h34v-5" stroke-width="2.4" vector-effect="non-scaling-stroke"/>
               </g>
             </g>
             <g fill="currentColor" stroke="none">
-              <circle cx="61" cy="104" r="4"/><circle cx="265" cy="104" r="4"/><circle cx="469" cy="104" r="4"/>
+              <circle cx="61" cy="113" r="5"/><circle cx="265" cy="113" r="5"/><circle cx="469" cy="113" r="5"/>
             </g>
-            <path class="study-guide" d="M61 120v11h204v-11"/>
-            <circle class="stack-cursor" cx="61" cy="104" r="6.5" stroke="var(--detail-ink)" stroke-width="2" visibility="hidden"/>
+            <g class="stack-stage-spans">
+              <defs><path id="stack-stage-bracket" d="M0 131v5h204v-5" stroke-width="2" vector-effect="non-scaling-stroke"/></defs>
+              <use href="#stack-stage-bracket" x="61"/>
+              <use href="#stack-stage-bracket" x="265" opacity="0"/>
+            </g>
           </svg>
           <figcaption class="grasp-detail">
-            <p class="scale-label"><strong>Execution</strong>Adjacent frames</p>
-            <svg id="stack-detail" viewBox="0 -24 440 131" role="img" aria-labelledby="grasp-title" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-              <title id="grasp-title">Gripper and block in two consecutive frames of the stack</title>
+            <p class="scale-label"><strong>Execution</strong>One-frame interval, enlarged</p>
+            <svg id="stack-detail" viewBox="0 -24 440 142" role="img" aria-labelledby="grasp-title" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <title id="grasp-title">Gripper poses at the start and end of the highlighted interval on the shared timeline</title>
               <g class="stack-detail-frame" transform="translate(80)">
                 <path class="study-guide" d="M-51 97h128"/>
                 <use href="#study-cube" x="48" y="96"/>
@@ -244,7 +249,7 @@
                   <use href="#study-finger" x="-16"/><use href="#study-finger" transform="translate(16) scale(-1 1)"/>
                 </g>
               </g>
-              <path class="study-guide" d="M202 53h35m-5-4 5 4-5 4" stroke-width="2"/>
+              <path class="study-inbetweens" d="M100 104v6h225v-6" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
             </svg>
           </figcaption>
         </figure>
