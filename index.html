@@ -112,7 +112,7 @@
         <div class="section-head" id="abstract">
           <p class="eyebrow">Approach</p>
           <h2 id="video-learning-title">Learning actions from video</h2>
-          <p>FreshVLA learns temporally hierarchical continuous latent actions from action-free videos and transfers them to robot control.</p>
+          <p>FreshVLA uses a temporal high-pass prior to guide patch-level attention toward manipulation-relevant changes in action-free videos. Cross-timescale sampling and frequency-domain regularization organize continuous latent actions into substage-scale components capturing long-horizon task progress and execution-scale residuals preserving local dynamics. During policy training, the frozen latent action encoder provides targets for joint flow matching of latent and robot actions.</p>
         </div>
         <section class="training-stage" id="analysis" aria-labelledby="pretrain-title">
           <h3 class="stage-title" id="pretrain-title"><span>Part I</span> Latent action pretraining</h3>
