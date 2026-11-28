@@ -1,75 +1,22 @@
-.video-reading {
-  --patch-blue:color-mix(in srgb,var(--c2) 76%,var(--ink));
+.approach-row {
   --track-green:color-mix(in srgb,var(--c3) 73%,var(--ink));
   --track-violet:color-mix(in srgb,var(--c4) 78%,var(--ink));
-  max-width:none;
-  overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:var(--surface);
+  display:grid;
+  grid-template-columns:minmax(0, .8fr) minmax(0, 1.2fr);
+  gap:clamp(24px,5vw,70px);
+  align-items:start;
+  padding:clamp(24px,4vw,48px) 0;
+  border-top:1px solid var(--line);
 }
-.learning-panel {min-width:0;padding:clamp(18px,2.7vw,34px)}
-.learning-diagrams {display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-.learning-panel + .learning-panel {border-left:1px solid var(--line)}
-.learning-panel h3,.policy-transfer h3 {color:var(--ink);font:500 clamp(1.25rem,2.2vw,1.65rem)/1.25 var(--serif);letter-spacing:-.03em}
-.learning-panel p,.policy-transfer p {color:var(--soft);font:.91rem/1.55 var(--sans);text-wrap:pretty}
-.learning-panel h3 + p {max-width:86ch;margin-top:9px}
-.motion-intro {display:grid;gap:18px}
-.patch-sequence {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(6px,.8vw,12px);width:100%;max-width:420px}
-.patch-example {min-width:0;text-align:center}
-.patch-example span {color:var(--muted);font:500 .72rem/1.35 var(--mono)}
-.patch-example span {display:block;margin-top:6px}
-.patch-grid {
-  position:relative;
-  width:100%;
-  aspect-ratio:1.25;
-  overflow:hidden;
-  border:1px solid color-mix(in srgb,var(--patch-blue) 22%,var(--line));
-  border-radius:7px;
-  background:color-mix(in srgb,var(--c2) 5%,var(--surface));
-}
-.patch-grid::after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:linear-gradient(to right,transparent calc(100% - 1px),var(--line) 0),linear-gradient(to bottom,transparent calc(100% - 1px),var(--line) 0);
-  background-size:12.5% 16.66667%;
-}
-.fixed-ring,.moving-block {position:absolute;z-index:1}
-.fixed-ring {left:69%;top:16%;width:14%;aspect-ratio:1;border:2px solid var(--muted);border-radius:50%}
-.moving-block {left:12.5%;top:54%;width:23%;aspect-ratio:1;border-radius:18%;background:var(--patch-blue)}
-.moving-block.later {left:52%;top:43%}
-.prior-grid {background:color-mix(in srgb,var(--c1) 4%,var(--surface));border-color:color-mix(in srgb,var(--c1) 22%,var(--line))}
-.patch-response {
-  position:absolute;
-  inset:0;
-  background:radial-gradient(ellipse at 23% 70%,var(--c1),transparent 40%),radial-gradient(ellipse at 64% 52%,var(--c1),transparent 43%);
-  clip-path:polygon(12.5% 50%,37.5% 50%,37.5% 33.333%,75% 33.333%,75% 66.667%,50% 66.667%,50% 83.333%,12.5% 83.333%);
-}
-.attention-comparison {margin-top:19px}
-.attention-link {display:block;padding:12px;border:1px solid var(--line);border-radius:10px;background:white;cursor:zoom-in}
-.attention-sheet {display:block;overflow:hidden}
-.attention-sheet img {width:100%;height:auto}
-.attention-zoom {display:flex;align-items:center;justify-content:flex-end;gap:5px;margin-top:8px;color:#535353;font:500 .74rem/1.4 var(--sans)}
-.attention-link:hover .attention-zoom,.attention-link:focus-visible .attention-zoom {color:#111;text-decoration:underline}
-.attention-comparison figcaption {margin-top:9px;text-align:left;text-wrap:pretty;font:.83rem/1.5 var(--sans)}
-.time-tracks {margin-top:20px}
-.structure-ablation {margin-top:24px;padding-top:19px;border-top:1px solid var(--line)}
-.ablation-heading {display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.ablation-heading h4 {margin:0;font:500 clamp(1.12rem,1.7vw,1.4rem)/1.3 var(--serif);letter-spacing:-.025em}
-.ablation-heading a {flex:none;color:var(--muted);font:.72rem var(--mono)}
-.ablation-heading a:hover {text-decoration:underline}
-.ablation-matrix {table-layout:fixed;white-space:normal}
-.ablation-matrix caption {padding:6px 0 12px;font:.79rem/1.45 var(--sans)}
-.ablation-matrix th,.ablation-matrix td {padding:9px 6px;text-align:center}
-.ablation-matrix thead th {border-bottom:1px solid var(--line);font-size:.78rem}
-.ablation-matrix th:first-child {width:30%;padding-left:0;text-align:left}
-.ablation-matrix tbody th {font:550 .84rem/1.3 var(--sans)}
-.ablation-matrix strong {display:block;font:550 clamp(1.28rem,2.3vw,1.8rem)/1.2 var(--serif);color:var(--ink)}
-.ablation-matrix small {display:block;margin-top:3px;font:.73rem/1.3 var(--sans);color:var(--muted)}
-.ablation-ours {background:color-mix(in srgb,var(--track-green) 11%,var(--surface))}
-.ablation-ours strong {color:color-mix(in srgb,var(--track-green) 72%,var(--ink))}
-.structure-ablation > p {margin-top:14px;font-size:.85rem}
+.approach-row h3,.approach-transfer h3 {font:500 clamp(1.45rem,2.4vw,2rem)/1.2 var(--serif);letter-spacing:-.03em}
+.approach-row p,.approach-transfer p {margin-top:12px;color:var(--soft);line-height:1.6;text-wrap:pretty}
+.approach-evidence {min-width:0;margin:0}
+.approach-evidence h4 {margin:0 0 14px;font:500 1.2rem/1.3 var(--serif)}
+.approach-evidence img {height:auto}
+.approach-evidence figcaption {margin:10px 0 0;color:var(--soft);font:.87rem/1.5 var(--sans);text-align:left}
+.approach-transfer {border-top:1px solid var(--line);padding-top:clamp(24px,4vw,48px)}
+.approach-transfer p {max-width:72ch;margin-bottom:24px}
+.time-tracks {margin-top:24px}
 .track-label span,.time-axis {color:var(--muted);font:500 .72rem/1.35 var(--mono)}
 .track-label,.time-axis {display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .track-label strong {color:var(--soft);font:600 .84rem/1.3 var(--sans)}
@@ -85,55 +32,10 @@
 .time-axis {gap:6px;font-size:.67rem}
 .time-axis::after {content:"";order:1;flex:1;border-top:1px solid var(--line);align-self:center}
 .time-axis span:last-child {order:2}
-.policy-transfer {
-  display:grid;
-  grid-template-columns:minmax(140px,.8fr) minmax(185px,1fr) 32px minmax(180px,1.4fr);
-  align-items:center;
-  gap:16px;
-  margin:0;
-  padding:22px clamp(18px,2.7vw,34px);
-  border-top:1px solid var(--line);
-  background:color-mix(in srgb,var(--band) 56%,var(--surface));
-  text-align:left;
-}
-.policy-inputs {display:grid;align-items:start;gap:8px}
-.policy-inputs span {display:grid;grid-template-columns:8px 1fr;align-items:center;column-gap:7px;color:var(--ink);font:600 .83rem/1.35 var(--sans)}
-.policy-inputs i {width:7px;height:7px;border-radius:50%;background:var(--patch-blue)}
-.policy-inputs span + span i {background:var(--muted)}
-.policy-inputs small {grid-column:2;color:var(--muted);font:400 .76rem/1.3 var(--sans)}
-.policy-merge {position:relative;height:38px;color:var(--muted)}
-.policy-merge::before {content:"";position:absolute;inset:0 45% 0 0;border:1.5px solid currentColor;border-left:0;border-radius:0 5px 5px 0}
-.policy-merge::after {content:"";position:absolute;left:55%;right:0;top:50%;border-top:1.5px solid currentColor}
-.policy-transfer p {font-size:.86rem}
-.policy-transfer strong {display:block;margin-bottom:2px;color:var(--ink)}
-@media(max-width:860px) {
-  .learning-diagrams {grid-template-columns:1fr}
-  .learning-panel + .learning-panel {border-left:0;border-top:1px solid var(--line)}
-}
 @media(max-width:760px) {
-  .policy-transfer {grid-template-columns:minmax(0,.85fr) 26px minmax(0,1.2fr);gap:12px}
-  .policy-transfer h3 {grid-column:1 / -1}
-}
-@media(max-width:620px) {
-  .attention-link {padding:8px}
-  /* Each column of the paper figure spans 1000px of the 2050px source. */
-  .attention-sheet img {width:205%;max-width:none}
-  .attention-sheet::after {
-    content:"";
-    display:block;
-    aspect-ratio:1000 / 453;
-    margin-top:7px;
-    background:white url(figures/attention.webp) right center / 205% 100% no-repeat;
-  }
-  #lightbox:has(img[src$="/attention.webp"]) img {width:1000px;max-width:none}
-  #lightbox:has(img[src$="/attention.webp"]) .lightbox-close {left:0}
-}
-@media(max-width:440px) {
-  .patch-example span {font-size:.64rem}
-  .policy-transfer {grid-template-columns:1fr}
-  .policy-inputs {grid-template-columns:1fr 1fr;gap:10px}
-  .policy-merge {display:none}
+  .approach-row {grid-template-columns:1fr}
+  .motion-visuals {min-height:1rem}
 }
 @media(forced-colors:active) {
-  .moving-block,.patch-response,.coarse-track i,.fine-track,.policy-inputs i {forced-color-adjust:none;background:CanvasText}
+  .coarse-track i,.fine-track {forced-color-adjust:none;background:CanvasText}
 }
