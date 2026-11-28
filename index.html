@@ -11,7 +11,7 @@
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
   <link rel="stylesheet" href="assets/cover.css?v=c4e2bfbb">
-  <link rel="stylesheet" href="assets/video-learning.css?v=c1f98463">
+  <link rel="stylesheet" href="assets/video-learning.css?v=5da6ce31">
   <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
   <script defer src="assets/benchmark-scene.js?v=2ba63d20"></script>
@@ -114,56 +114,78 @@
           <h2 id="video-learning-title">Learning actions from video</h2>
           <p>FreshVLA learns temporally hierarchical continuous latent actions from action-free videos and transfers them to robot control.</p>
         </div>
-        <div class="approach-grid" id="analysis">
-          <article class="approach-panel">
-            <header>
-              <h3>Where does the action happen?</h3>
-              <p>Static backgrounds help predict future observations but are only weakly related to control. FreshVLA uses temporal high-pass responses to guide patch-level attention toward manipulation-relevant changes. Brighter regions in the lower row indicate stronger responses.</p>
-            </header>
-            <figure>
+        <section class="training-stage" id="analysis" aria-labelledby="pretrain-title">
+          <h3 class="stage-title" id="pretrain-title"><span>Part I</span> Latent action pretraining</h3>
+          <div class="approach-pair">
+            <article class="approach-panel">
+              <header>
+                <h4>Where does the action happen?</h4>
+                <p>Static backgrounds can help predict future frames. PAWKL uses a temporal high-pass prior to guide patch-level attention toward changes in the scene, visible in the lower row.</p>
+              </header>
+              <figure>
               <a class="figure-link" href="assets/figures/high-pass-frames.png" data-zoom>
                 <img src="assets/figures/high-pass-frames.png" width="1262" height="727" loading="lazy" alt="RGB frames 14, 53, 97, and 141 above their temporal high-pass responses. Bright regions follow the moving arm and gripper across a largely static tabletop.">
                 <span class="zoom-icon"><svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></span>
               </a>
             </figure>
-          </article>
-          <article class="approach-panel">
-            <header>
-              <h3>How does the action unfold?</h3>
-              <p>A single transition scale can obscure slow progress and local adjustments. Cross-timescale sampling and frequency regularization encourage the substage stream to capture long-horizon progress and the execution stream to capture local motion residuals, such as a brief adjustment during grasp or release.</p>
-            </header>
-            <figure>
+            </article>
+            <svg class="approach-arrow" viewBox="0 0 28 16" aria-hidden="true" focusable="false"><path d="M2 8h23m-6-6 6 6-6 6"/></svg>
+            <article class="approach-panel">
+              <header>
+                <h4>Visual robustness</h4>
+                <p>With PAWKL, action-decoding error stays closer to its clean-trajectory level under all three visual perturbations. Under camera changes, the relative robustness score rises from 0.829 to 0.933 (1 denotes clean parity).</p>
+              </header>
+              <figure>
+              <a class="figure-link" href="assets/figures/visual-robustness.png" data-zoom>
+                <img src="assets/figures/visual-robustness.png" width="2300" height="623" loading="lazy" alt="Visual perturbation examples alongside measured relative robustness under background, lighting, and camera perturbations. FreshVLA scores 0.980, 0.980, and 0.933 with PAWKL, compared with 0.870, 0.877, and 0.829 without it.">
+                <span class="zoom-icon"><svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></span>
+              </a>
+            </figure>
+            </article>
+          </div>
+          <div class="approach-pair">
+            <article class="approach-panel">
+              <header>
+                <h4>How does the action unfold?</h4>
+                <p>The substage stream tracks progress over many frames, while the execution stream encodes local motion residuals, such as a grasp adjustment. Frequency regularization encourages this division across timescales.</p>
+              </header>
+              <figure>
               <a class="figure-link" href="assets/figures/two-timescales.svg" data-zoom>
                 <img src="assets/figures/two-timescales.svg" width="760" height="520" loading="lazy" alt="Illustrative 3D rendering of a seven-axis Flexiv Rizon 4 with a Grav gripper. Four poses show the gripper approaching the pot, grasping the knob, lifting the lid, and releasing it beside the pot. The traces below illustrate gradual task progress, a brief grasp adjustment, and a smaller fluctuation at release.">
                 <span class="zoom-icon"><svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></span>
               </a>
             </figure>
-          </article>
-          <article class="approach-panel">
-            <header>
-              <h3>How much does temporal context help?</h3>
-              <p>Both continuous variants gain most of their decoding accuracy within 10 context steps. At 35 steps, the hierarchical continuous variant has the lowest mean squared error (0.032, versus 0.034 for its single-scale counterpart).</p>
-            </header>
-            <figure>
+            </article>
+            <svg class="approach-arrow" viewBox="0 0 28 16" aria-hidden="true" focusable="false"><path d="M2 8h23m-6-6 6 6-6 6"/></svg>
+            <article class="approach-panel">
+              <header>
+                <h4>Long-horizon gains</h4>
+                <p>At 35 context steps, hierarchical continuous latent actions yield lower action-regression MSE than their single-scale counterpart (0.032 vs. 0.034). The same comparison raises LIBERO-Long success from 93.0% to 98.0%.</p>
+              </header>
+              <figure>
               <a class="figure-link" href="assets/figures/action-regression.webp" data-zoom>
                 <img src="assets/figures/action-regression.webp" width="1080" height="537" loading="lazy" alt="Relative error reduction from each variant’s one-step baseline. Both continuous variants gain about 50% by ten steps, while the discrete variants stay near zero.">
                 <span class="zoom-icon"><svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></span>
               </a>
             </figure>
-          </article>
-          <article class="approach-panel" id="method">
+            </article>
+          </div>
+        </section>
+        <section class="training-stage" id="method" aria-labelledby="posttrain-title">
+          <h3 class="stage-title" id="posttrain-title"><span>Part II</span> Policy post-training</h3>
+          <article class="policy-transfer">
             <header>
-              <h3>From video to control</h3>
-              <p>During policy training, the frozen latent action encoder provides targets for joint flow matching of latent and robot actions.</p>
+              <h4>From video to control</h4>
+              <p>During policy training, the frozen latent action encoder supplies targets for joint flow matching. At inference, the policy jointly generates latent and robot actions from current observations and the instruction, then executes the robot actions.</p>
             </header>
             <figure>
-              <a class="figure-link" href="assets/figures/overview.webp" data-zoom>
-                <img src="assets/figures/overview.webp" loading="lazy" width="2200" height="1037" alt="FreshVLA overview, showing a high-pass visual prior, hierarchical latent actions, and joint flow matching for robot control.">
-                <span class="zoom-icon"><svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></span>
-              </a>
-            </figure>
+            <a class="figure-link" href="assets/figures/overview.webp" data-zoom>
+              <img src="assets/figures/overview.webp" loading="lazy" width="2200" height="1037" alt="FreshVLA overview, showing a high-pass visual prior, hierarchical latent actions, and joint flow matching for robot control.">
+              <span class="zoom-icon"><svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></span>
+            </a>
+          </figure>
           </article>
-        </div>
+        </section>
       </div>
     </section>
     <section class="stats-section" aria-label="Benchmark highlights">
