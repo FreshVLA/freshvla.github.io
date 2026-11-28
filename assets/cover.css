@@ -93,8 +93,6 @@
 .bar-track i {display:block;height:100%;min-width:1px;border-radius:inherit;background-size:max(32px,100%) 100%;background-repeat:no-repeat}
 .probe-value {font:400 .78rem var(--mono);text-align:right}
 .probe figcaption {margin-top:15px;padding-top:11px;border-top:1px solid var(--line);text-align:left;color:var(--muted);font-size:.82rem;line-height:1.55}
-.research-cover #abstract {background:var(--paper)}
-.research-cover #method {background:var(--band)}
 .research-cover .robot-section {padding-block:clamp(3.5rem,8vw,6rem)}
 .research-cover .eyebrow::before,
 .research-cover .idea>.paper-kind::before {
