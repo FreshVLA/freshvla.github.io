@@ -10,7 +10,7 @@
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
-  <link rel="stylesheet" href="assets/cover.css?v=643e9294">
+  <link rel="stylesheet" href="assets/cover.css?v=b7ca4d1c">
   <link rel="stylesheet" href="assets/video-learning.css?v=929f2faa">
   <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
@@ -97,36 +97,174 @@
     </header>
     <section id="timescales" aria-labelledby="timescales-title">
       <div class="wrap timescale-layout">
-        <div class="idea">
+        <header class="idea">
           <p class="paper-kind">The central idea</p>
-          <h2 id="timescales-title">One action,<br> two timescales.</h2>
-          <p class="idea-lede">Watch a robot open a pot. Over several frames, the lid lifts clear. From one frame to the next, the gripper makes small adjustments at the handle.</p>
-          <dl class="streams">
-            <div><dt><i class="substage-swatch" aria-hidden="true"></i>Substage scale</dt><dd>Tracks how the task progresses across a longer span of video.</dd></div>
-            <div><dt><i class="execution-swatch" aria-hidden="true"></i>Execution scale</dt><dd>Captures local motion left over after accounting for that progress.</dd></div>
-          </dl>
-        </div>
+          <h2 id="timescales-title">One action, two timescales.</h2>
+        </header>
+        <figure class="task-study" aria-labelledby="blocks-heading">
+          <header>
+            <h3 id="blocks-heading">Stacking two blocks</h3>
+            <p class="probe-subtitle">Illustration · Follow the green block</p>
+          </header>
+          <svg viewBox="-30 -50 595 330" role="img" aria-labelledby="task-study-title" aria-describedby="task-study-desc" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <title id="task-study-title">Stacking two blocks at two temporal scales</title>
+            <desc id="task-study-desc">The arm reaches for the green block, carries it over the base block, and releases it onto the stack. Black dots mark substage anchors on a shared timeline. Green ticks mark individual frames across both intervals. The two bold ticks select one execution step. The enlarged views show the parallel jaws moving inward until their pads meet the sides of the block.</desc>
+            <defs>
+              <g id="study-cube" stroke-width="1.8">
+                <rect x="-16" y="-32" width="32" height="32" rx="1.6" fill="color-mix(in srgb,currentColor 15%,var(--surface))"/>
+                <path d="M-12-28h24" opacity=".38" stroke-width="1"/>
+              </g>
+              <linearGradient id="arm-shell" x2="0" y2="1" gradientUnits="objectBoundingBox">
+                <stop stop-color="#fdfbf4"/><stop offset=".42" stop-color="#e8e9e1"/>
+                <stop offset=".75" stop-color="#c6cbc3"/><stop offset="1" stop-color="#9ba49e"/>
+              </linearGradient>
+              <linearGradient id="arm-metal">
+                <stop stop-color="#838c89"/><stop offset=".3" stop-color="#e5e8df"/>
+                <stop offset=".64" stop-color="#c0c7c1"/><stop offset="1" stop-color="#8f9995"/>
+              </linearGradient>
+              <g id="arm-pedestal" stroke="#515b57" stroke-width="1.3">
+                <path d="M-15-1l2-20q1-5 13-5t13 5l2 20Z" fill="url(#arm-metal)"/>
+                <path d="M-12-17q12 3 24 0v4q-12 3-24 0Z" fill="#65726b"/>
+                <path d="M-18-3h36l2 5q-20 3-40 0Z" fill="url(#arm-shell)"/>
+                <path d="M-15 0h2m26 0h2" stroke-width="2"/>
+              </g>
+              <g id="arm-upper" stroke="#515b57" stroke-width="1.4">
+                <path d="M-5-9Q3-16 17-13l13 5 30-1q9-1 18-4 12-2 15 9 3 13-9 16-11 2-20-3l-37 2q-12 6-23 1-11-4-9-12Z" fill="url(#arm-shell)"/>
+                <path d="M23-10q4 9 1 20m42-20q4 8 2 17" fill="none" stroke="#89928b"/>
+                <path d="M32-5l24-1" fill="none" stroke="#fffef9" stroke-width="2.3"/>
+              </g>
+              <g id="arm-fore" stroke="#515b57" stroke-width="1.4">
+                <path d="M-6-7q6-10 18-6l12 5 29 1q5-1 11-3 12-3 13 9 1 8-8 10-6 1-13-2L26 8l-12 4Q-4 17-7 4Z" fill="url(#arm-shell)"/>
+                <path d="m23-8 8 1 1 15-7 .3Z" fill="#ad5c51" stroke="#8c5149" stroke-width=".8"/>
+                <path d="M37-4h13" stroke="#fffef9" stroke-width="2.2"/>
+              </g>
+              <g id="arm-bearing" stroke="#66706a" stroke-width="1.2">
+                <circle r="9.4" fill="url(#arm-metal)"/><circle r="6.7" fill="#dce0d7"/>
+                <path d="M-2.6 1.8 0-2.2l2.6 4" stroke="#9ba69e" fill="none"/>
+                <circle cy="-8" r=".8" fill="#535f58" stroke="none"/>
+              </g>
+              <g id="study-palm" stroke="#525d58" stroke-width="1.3">
+                <rect x="-6.4" y="-16" width="12.8" height="17" rx="4.5" fill="url(#arm-metal)"/>
+                <circle cy="-12" r="6.5" fill="url(#arm-shell)"/><circle cy="-12" r="2.4" fill="#afbab3"/>
+                <rect x="-7.5" y="-4" width="15" height="4" rx="1" fill="#515d59"/>
+                <path d="M-29 0h58l3 3v5l-3 3h-58l-3-3V3Z" fill="#47514e" stroke="#87918b"/>
+                <path d="M-24 5.5h48" stroke="#abb4ad"/>
+                <circle cx="-27" cy="5.5" r="1.1" fill="#ced4cc" stroke="none"/>
+                <circle cx="27" cy="5.5" r="1.1" fill="#ced4cc" stroke="none"/>
+              </g>
+              <g id="study-finger" stroke="#758179" stroke-width="1.1">
+                <path d="M-6 11h5v5l-1 2v12h-4Z" fill="#474f4d"/>
+                <path d="M-2 20h2v10h-2Z" fill="var(--detail-ink)" stroke="none"/>
+              </g>
+              <g id="study-grip-open">
+                <use href="#study-palm"/>
+                <use href="#study-finger" x="-25"/><use href="#study-finger" transform="translate(25) scale(-1 1)"/>
+              </g>
+              <g id="study-grip-closed">
+                <use href="#study-palm"/>
+                <use href="#study-finger" x="-16"/><use href="#study-finger" transform="translate(16) scale(-1 1)"/>
+              </g>
+            </defs>
+            <g transform="translate(65)">
+              <text class="span-label" y="-28" text-anchor="middle">Reach</text>
+              <use href="#arm-pedestal" x="-72" y="95"/>
+              <use href="#arm-upper" transform="translate(-72 76) rotate(-82.11)"/>
+              <use href="#arm-fore" transform="translate(-60.2 -9.2) rotate(39.93)"/>
+              <use href="#arm-bearing" x="-72" y="76"/>
+              <use href="#arm-bearing" x="-60.2" y="-9.2"/>
+              <use href="#study-cube" x="48" y="96"/>
+              <use href="#study-cube" x="-5" y="96" class="study-inbetweens"/>
+              <g transform="translate(-5 49)">
+                <use href="#study-grip-open"/>
+              </g>
+            </g>
+            <g transform="translate(265)">
+              <text class="span-label" y="-28" text-anchor="middle">Carry</text>
+              <use href="#arm-pedestal" x="-72" y="95"/>
+              <use href="#arm-upper" transform="translate(-72 76) rotate(-54.37)"/>
+              <use href="#arm-fore" transform="translate(-21.9 6.1) rotate(-13.75)"/>
+              <use href="#arm-bearing" x="-72" y="76"/>
+              <use href="#arm-bearing" x="-21.9" y="6.1"/>
+              <use href="#study-cube" x="48" y="96"/>
+              <use href="#study-cube" x="48" y="48" class="study-inbetweens"/>
+              <g transform="translate(48 1)">
+                <use href="#study-grip-closed"/>
+              </g>
+            </g>
+            <g transform="translate(465)">
+              <text class="span-label" y="-28" text-anchor="middle">Stack</text>
+              <use href="#arm-pedestal" x="-72" y="95"/>
+              <use href="#arm-upper" transform="translate(-72 76) rotate(-55.94)"/>
+              <use href="#arm-fore" transform="translate(-23.8 4.7) rotate(-3.75)"/>
+              <use href="#arm-bearing" x="-72" y="76"/>
+              <use href="#arm-bearing" x="-23.8" y="4.7"/>
+              <use href="#study-cube" x="48" y="96"/>
+              <use href="#study-cube" x="48" y="64" class="study-inbetweens"/>
+              <g transform="translate(48 12)">
+                <use href="#study-grip-open"/>
+              </g>
+            </g>
+            <path class="study-guide" d="M51 111h434m-5-4 5 4-5 4"/>
+            <g class="study-inbetweens" stroke-width="1.8">
+              <defs>
+                <path id="execution-ticks" stroke-width="1.6" vector-effect="non-scaling-stroke" d="M65 107v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8"/>
+              </defs>
+              <use href="#execution-ticks"/><use href="#execution-ticks" x="200"/>
+              <path d="M465 107v8"/>
+              <path d="M85 105v12 M105 105v12" stroke-width="4" vector-effect="non-scaling-stroke"/>
+              <path d="M85 121v4h20v-4 M95 125v16"/>
+            </g>
+            <g fill="currentColor" stroke="none">
+              <circle cx="65" cy="111" r="4"/><circle cx="265" cy="111" r="4"/><circle cx="465" cy="111" r="4"/>
+            </g>
+            <path class="study-guide" d="M65 121v12h200v-12"/>
+            <text x="278" y="137" class="span-label">Across several frames</text>
+            <rect x="-25" y="141" width="580" height="135" rx="9" fill="var(--band)" stroke="var(--line)"/>
+            <g text-anchor="middle" style="--surface:var(--band)">
+              <text x="265" y="160" class="span-label">Adjacent frames · grasp detail</text>
+              <g transform="translate(120 188) scale(1.2)">
+                <use href="#study-cube" y="47" class="study-inbetweens"/><use href="#study-grip-open"/>
+                <path d="M-38 48h76" class="study-guide"/>
+              </g>
+              <text x="120" y="267" class="span-label">Jaws closing</text>
+              <g transform="translate(407 188) scale(1.2)">
+                <use href="#study-cube" y="47" class="study-inbetweens"/><use href="#study-grip-closed"/>
+                <path d="M-38 48h76" class="study-guide"/>
+              </g>
+              <text x="407" y="267" class="span-label">Pads touch block</text>
+              <path class="study-guide" d="M238 216h45m-6-5 6 5-6 5" stroke-width="2"/>
+            </g>
+          </svg>
+          <figcaption class="study-key">
+            <span><strong>Substage</strong>Across many frames, the arm lifts, carries, and stacks the block.</span>
+            <span><strong>Execution</strong>Between adjacent frames, the fingers close around the stationary block.</span>
+          </figcaption>
+        </figure>
         <figure class="probe" aria-labelledby="probe-title">
-          <div class="probe-heading"><h3 id="probe-title">What each stream predicts</h3><a class="figure-source" href="assets/figures/frequency-probe.webp" data-zoom data-caption="Original frequency probe from Figure 6b of the FreshVLA preprint" aria-label="Enlarge original paper figure 6b">Fig. 6b <svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></a></div>
-          <p class="probe-subtitle">Predictive R² on held-out robot motion</p>
-          <div class="band-group"><h4>Low-frequency motion</h4><div class="probe-measure">
-                  <span class="stream-label">Substage</span>
-                  <div class="bar-track" aria-hidden="true"><i class="substage-bar" style="width:90.000%"></i></div>
-                  <span class="probe-value">0.315</span>
-                </div><div class="probe-measure">
-                  <span class="stream-label">Execution</span>
-                  <div class="bar-track" aria-hidden="true"><i class="execution-bar" style="width:81.143%"></i></div>
-                  <span class="probe-value">0.284</span>
-                </div></div>
-          <div class="band-group"><h4>High-frequency motion</h4><div class="probe-measure">
-                  <span class="stream-label">Substage</span>
-                  <div class="bar-track" aria-hidden="true"><i class="substage-bar" style="width:0.286%"></i></div>
-                  <span class="probe-value">0.001</span>
-                </div><div class="probe-measure">
-                  <span class="stream-label">Execution</span>
-                  <div class="bar-track" aria-hidden="true"><i class="execution-bar" style="width:15.143%"></i></div>
-                  <span class="probe-value">0.053</span>
-                </div></div>
+          <header>
+            <div class="probe-heading"><h3 id="probe-title">What each stream predicts</h3><a class="figure-source" href="assets/figures/frequency-probe.webp" data-zoom data-caption="Original frequency probe from Figure 6b of the FreshVLA preprint" aria-label="Enlarge original paper figure 6b">Fig. 6b <svg class="icon" aria-hidden="true"><use href="#i-zoom"></use></svg></a></div>
+            <p class="probe-subtitle">Predictive R² on held-out robot motion</p>
+          </header>
+          <div class="probe-bands">
+            <div class="band-group"><h4>Low-frequency motion</h4><div class="probe-measure">
+                    <span class="stream-label">Substage</span>
+                    <div class="bar-track" aria-hidden="true"><i class="substage-bar" style="width:90.000%"></i></div>
+                    <span class="probe-value">0.315</span>
+                  </div><div class="probe-measure">
+                    <span class="stream-label">Execution</span>
+                    <div class="bar-track" aria-hidden="true"><i class="execution-bar" style="width:81.143%"></i></div>
+                    <span class="probe-value">0.284</span>
+                  </div></div>
+            <div class="band-group"><h4>High-frequency motion</h4><div class="probe-measure">
+                    <span class="stream-label">Substage</span>
+                    <div class="bar-track" aria-hidden="true"><i class="substage-bar" style="width:0.286%"></i></div>
+                    <span class="probe-value">0.001</span>
+                  </div><div class="probe-measure">
+                    <span class="stream-label">Execution</span>
+                    <div class="bar-track" aria-hidden="true"><i class="execution-bar" style="width:15.143%"></i></div>
+                    <span class="probe-value">0.053</span>
+                  </div></div>
+          </div>
           <figcaption>In four LIBERO suites, both streams predict slow motion more accurately. The execution stream retains more of the fast-changing detail.</figcaption>
         </figure>
       </div>

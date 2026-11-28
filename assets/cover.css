@@ -60,31 +60,41 @@
 #timescales {background:var(--band);border-block:1px solid var(--line)}
 .timescale-layout {
   display:grid;
-  grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);
-  align-items:center;
-  gap:clamp(32px,7vw,94px);
-  padding-block:clamp(44px,5vw,72px);
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:clamp(16px,2.2vw,30px);
+  padding-block:clamp(26px,3vw,44px);
 }
-.idea h2 {margin:12px 0 14px;font-size:clamp(2.5rem,4.1vw,3.65rem);letter-spacing:-.055em;line-height:1.03}
-.idea-lede {font-size:1rem;color:var(--soft);line-height:1.65;max-width:47ch}
-.streams {margin:19px 0 0;display:grid;gap:10px}
-.streams div {display:grid;grid-template-columns:141px minmax(0,1fr);gap:12px;align-items:baseline}
-.streams dt {font-size:.9rem;font-weight:650;white-space:nowrap}
-.streams dd {margin:0;color:var(--soft);font-size:.87rem;line-height:1.5}
-.streams i {display:inline-block;width:17px;height:7px;margin:0 7px 1px 0;border-radius:2px}
-.substage-swatch,.substage-bar {background:var(--substage)}
-.execution-swatch,.execution-bar {background:var(--execution)}
-.probe {
-  padding:clamp(19px,2.3vw,30px);
+.timescale-layout > .idea {grid-column:1 / -1;margin-bottom:clamp(14px,1.6vw,22px)}
+.idea h2 {margin:10px 0 0;text-wrap:balance;font-size:clamp(2.5rem,4.1vw,3.65rem);letter-spacing:-.055em;line-height:1.03}
+.task-study {--detail-ink:color-mix(in srgb,var(--c3) 60%,var(--ink))}
+.task-study svg {display:block;width:100%;height:auto;color:var(--ink)}
+.study-guide {color:color-mix(in srgb,var(--muted) 65%,var(--band))}
+.study-inbetweens {color:var(--detail-ink)}
+.task-study .span-label {fill:currentColor;stroke:var(--surface);stroke-width:4;paint-order:stroke;font:500 16px var(--sans)}
+@media(max-width:600px) {
+  .task-study .span-label {font-size:20px}
+}
+.study-key {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;font:.86rem/1.5 var(--sans);color:var(--soft)}
+.study-key strong {display:block;margin-bottom:3px;font-size:1rem;color:var(--ink)}
+.study-key strong::before {content:"";display:inline-block;width:7px;height:7px;margin:0 7px 1px 0;border-radius:50%;background:currentColor}
+.study-key span + span strong {color:var(--detail-ink)}
+.study-key span + span strong::before {width:4px;height:11px;border-radius:2px}
+.substage-bar {background:var(--substage)}
+.execution-bar {background:var(--execution)}
+.timescale-layout > figure {
+  display:grid;
+  grid-row:span 3;
+  grid-template-rows:subgrid;
+  padding:clamp(14px,1.5vw,20px) clamp(19px,2.3vw,30px);
   border:1px solid var(--line);
   border-radius:12px;
   background:var(--surface);
 }
 .probe-heading {display:flex;justify-content:space-between;align-items:center;gap:12px}
-.probe-heading h3 {font-size:clamp(1.25rem,1.6vw,1.55rem);letter-spacing:-.025em;line-height:1.2}
+.timescale-layout figure h3 {font-size:clamp(1.25rem,1.6vw,1.55rem);letter-spacing:-.025em;line-height:1.2}
 .figure-source {display:inline-flex;align-items:center;gap:5px;white-space:nowrap;color:var(--muted);font:.72rem var(--mono)}
 .figure-source:hover {text-decoration:underline;color:var(--ink)}
-.probe-subtitle {margin:5px 0 16px;color:var(--muted);font-size:.85rem}
+.probe-subtitle {margin:4px 0 10px;color:var(--muted);font-size:.85rem}
 .band-group+.band-group {margin-top:13px}
 .band-group h4 {margin:0 0 4px;font:650 .85rem/1.45 var(--sans)}
 .probe-measure {display:grid;grid-template-columns:67px 1fr 4.8ch;align-items:center;gap:10px;padding:2px 0}
@@ -92,7 +102,9 @@
 .bar-track {height:8px;background:var(--band);border-radius:1px}
 .bar-track i {display:block;height:100%;min-width:1px;border-radius:inherit;background-size:max(32px,100%) 100%;background-repeat:no-repeat}
 .probe-value {font:400 .78rem var(--mono);text-align:right}
-.probe figcaption {margin-top:15px;padding-top:11px;border-top:1px solid var(--line);text-align:left;color:var(--muted);font-size:.82rem;line-height:1.55}
+.timescale-layout figure > figcaption {margin-top:10px;padding-top:8px;border-top:1px solid var(--line);text-align:left}
+.probe figcaption {color:var(--muted);font-size:.82rem;line-height:1.55}
+.task-study svg,.probe-bands {align-self:center}
 .research-cover .robot-section {padding-block:clamp(3.5rem,8vw,6rem)}
 .research-cover .eyebrow::before,
 .research-cover .idea>.paper-kind::before {
@@ -193,17 +205,10 @@
   .paper-details .authors {margin-top:18px}
   .paper-details .actions {margin-top:20px}
 }
-@media(max-width:900px) {
-  .timescale-layout {gap:28px}
-  .streams div {display:block}
-  .streams dd {margin:3px 0 0 15px}
-}
-@media(max-width:768px) {
-  .timescale-layout {grid-template-columns:1fr;gap:22px}
-  .idea h2 br {display:none}
-  .idea-lede {max-width:62ch}
-  .streams div {display:grid}
-  .streams dd {margin:0}
+@media(max-width:850px) {
+  .timescale-layout {grid-template-columns:1fr;row-gap:16px}
+  .timescale-layout > .idea {margin-bottom:0}
+  .timescale-layout > figure {display:block;grid-row:auto}
 }
 @media(max-width:600px) {
   .cover-layout {padding:24px 16px 6px}
@@ -214,13 +219,11 @@
   .paper-details .roles {gap:2px 8px;font-size:.7rem}
   .paper-details .actions {gap:6px;margin-top:16px}
   .paper-details .btn {font-size:.78rem;padding:8px;gap:4px}
-  .streams div {grid-template-columns:122px minmax(0,1fr);gap:8px}
-  .streams dt {font-size:.82rem}
 }
 @media(max-width:440px) {
   .paper-details .actions {max-width:290px;margin-inline:auto}
 }
 @media(max-width:360px) {
-  .probe {padding:14px}
+  .timescale-layout > figure {padding:14px}
   .probe-measure {grid-template-columns:60px 1fr 4.8ch;gap:7px}
 }
