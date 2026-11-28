@@ -10,10 +10,11 @@
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
-  <link rel="stylesheet" href="assets/cover.css?v=b7ca4d1c">
+  <link rel="stylesheet" href="assets/cover.css?v=4508e4fd">
   <link rel="stylesheet" href="assets/video-learning.css?v=929f2faa">
   <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
+  <script defer src="assets/stack-motion.js"></script>
   <script defer src="assets/benchmark-scene.js?v=2ba63d20"></script>
   <script defer src="assets/cover-motion.js?v=427b3ac6"></script>
   <style>
@@ -100,15 +101,22 @@
         <header class="idea">
           <p class="paper-kind">The central idea</p>
           <h2 id="timescales-title">One action, two timescales.</h2>
+          <p class="scale-intro">
+            <span>The <strong>substage scale</strong> tracks task progress across many frames.</span>
+            <span>The <strong class="execution-name">execution scale</strong> captures fine adjustments from frame to frame.</span>
+          </p>
         </header>
         <figure class="task-study" aria-labelledby="blocks-heading">
           <header>
-            <h3 id="blocks-heading">Stacking two blocks</h3>
-            <p class="probe-subtitle">Illustration · Follow the green block</p>
+            <div class="stack-heading">
+              <h3 id="blocks-heading">Stacking two blocks</h3>
+              <button type="button" class="stack-playback" aria-controls="stack-sequence" hidden>Play motion</button>
+            </div>
+            <p class="scale-label"><strong>Substage</strong>Across many frames</p>
           </header>
-          <svg viewBox="-30 -50 595 330" role="img" aria-labelledby="task-study-title" aria-describedby="task-study-desc" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <svg id="stack-sequence" viewBox="-30 -27 595 168" role="img" aria-labelledby="task-study-title" aria-describedby="task-study-desc" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <title id="task-study-title">Stacking two blocks at two temporal scales</title>
-            <desc id="task-study-desc">The arm reaches for the green block, carries it over the base block, and releases it onto the stack. Black dots mark substage anchors on a shared timeline. Green ticks mark individual frames across both intervals. The two bold ticks select one execution step. The enlarged views show the parallel jaws moving inward until their pads meet the sides of the block.</desc>
+            <desc id="task-study-desc">Three illustrative poses show the arm stacking a block. Black dots mark substage anchors. Green ticks show the frames between them. The two bold ticks mark the adjacent frames enlarged below.</desc>
             <defs>
               <g id="study-cube" stroke-width="1.8">
                 <rect x="-16" y="-32" width="32" height="32" rx="1.6" fill="color-mix(in srgb,currentColor 15%,var(--surface))"/>
@@ -165,8 +173,7 @@
                 <use href="#study-finger" x="-16"/><use href="#study-finger" transform="translate(16) scale(-1 1)"/>
               </g>
             </defs>
-            <g transform="translate(65)">
-              <text class="span-label" y="-28" text-anchor="middle">Reach</text>
+            <g class="stack-pose" transform="translate(65)">
               <use href="#arm-pedestal" x="-72" y="95"/>
               <use href="#arm-upper" transform="translate(-72 76) rotate(-82.11)"/>
               <use href="#arm-fore" transform="translate(-60.2 -9.2) rotate(39.93)"/>
@@ -174,12 +181,12 @@
               <use href="#arm-bearing" x="-60.2" y="-9.2"/>
               <use href="#study-cube" x="48" y="96"/>
               <use href="#study-cube" x="-5" y="96" class="study-inbetweens"/>
-              <g transform="translate(-5 49)">
-                <use href="#study-grip-open"/>
+              <g class="stack-tool" transform="translate(-5 49)">
+                <use href="#study-palm"/>
+                <use href="#study-finger" x="-25"/><use href="#study-finger" transform="translate(25) scale(-1 1)"/>
               </g>
             </g>
-            <g transform="translate(265)">
-              <text class="span-label" y="-28" text-anchor="middle">Carry</text>
+            <g class="stack-pose" transform="translate(265)">
               <use href="#arm-pedestal" x="-72" y="95"/>
               <use href="#arm-upper" transform="translate(-72 76) rotate(-54.37)"/>
               <use href="#arm-fore" transform="translate(-21.9 6.1) rotate(-13.75)"/>
@@ -187,12 +194,12 @@
               <use href="#arm-bearing" x="-21.9" y="6.1"/>
               <use href="#study-cube" x="48" y="96"/>
               <use href="#study-cube" x="48" y="48" class="study-inbetweens"/>
-              <g transform="translate(48 1)">
-                <use href="#study-grip-closed"/>
+              <g class="stack-tool" transform="translate(48 1)">
+                <use href="#study-palm"/>
+                <use href="#study-finger" x="-16"/><use href="#study-finger" transform="translate(16) scale(-1 1)"/>
               </g>
             </g>
-            <g transform="translate(465)">
-              <text class="span-label" y="-28" text-anchor="middle">Stack</text>
+            <g class="stack-pose" transform="translate(465)">
               <use href="#arm-pedestal" x="-72" y="95"/>
               <use href="#arm-upper" transform="translate(-72 76) rotate(-55.94)"/>
               <use href="#arm-fore" transform="translate(-23.8 4.7) rotate(-3.75)"/>
@@ -200,44 +207,39 @@
               <use href="#arm-bearing" x="-23.8" y="4.7"/>
               <use href="#study-cube" x="48" y="96"/>
               <use href="#study-cube" x="48" y="64" class="study-inbetweens"/>
-              <g transform="translate(48 12)">
-                <use href="#study-grip-open"/>
+              <g class="stack-tool" transform="translate(48 12)">
+                <use href="#study-palm"/>
+                <use href="#study-finger" x="-25"/><use href="#study-finger" transform="translate(25) scale(-1 1)"/>
               </g>
             </g>
-            <path class="study-guide" d="M51 111h434m-5-4 5 4-5 4"/>
-            <g class="study-inbetweens" stroke-width="1.8">
+            <path class="study-guide" d="M47 113h440m-5-4 5 4-5 4"/>
+            <g class="study-inbetweens">
               <defs>
-                <path id="execution-ticks" stroke-width="1.6" vector-effect="non-scaling-stroke" d="M65 107v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8 m20-8v8"/>
+                <path id="six-frame-ticks" d="M61 109v8 m34-8v8 m34-8v8 m34-8v8 m34-8v8 m34-8v8" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
               </defs>
-              <use href="#execution-ticks"/><use href="#execution-ticks" x="200"/>
-              <path d="M465 107v8"/>
-              <path d="M85 105v12 M105 105v12" stroke-width="4" vector-effect="non-scaling-stroke"/>
-              <path d="M85 121v4h20v-4 M95 125v16"/>
+              <use href="#six-frame-ticks"/><use href="#six-frame-ticks" x="204"/>
+              <path d="M469 109v8" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+              <path d="M95 107v12 M129 107v12" stroke-width="4" vector-effect="non-scaling-stroke"/>
+              <path d="M95 123v4h34v-4 M112 127v14" stroke-width="1.8"/>
             </g>
             <g fill="currentColor" stroke="none">
-              <circle cx="65" cy="111" r="4"/><circle cx="265" cy="111" r="4"/><circle cx="465" cy="111" r="4"/>
+              <circle cx="61" cy="104" r="4"/><circle cx="265" cy="104" r="4"/><circle cx="469" cy="104" r="4"/>
             </g>
-            <path class="study-guide" d="M65 121v12h200v-12"/>
-            <text x="278" y="137" class="span-label">Across several frames</text>
-            <rect x="-25" y="141" width="580" height="135" rx="9" fill="var(--band)" stroke="var(--line)"/>
-            <g text-anchor="middle" style="--surface:var(--band)">
-              <text x="265" y="160" class="span-label">Adjacent frames · grasp detail</text>
-              <g transform="translate(120 188) scale(1.2)">
-                <use href="#study-cube" y="47" class="study-inbetweens"/><use href="#study-grip-open"/>
-                <path d="M-38 48h76" class="study-guide"/>
-              </g>
-              <text x="120" y="267" class="span-label">Jaws closing</text>
-              <g transform="translate(407 188) scale(1.2)">
-                <use href="#study-cube" y="47" class="study-inbetweens"/><use href="#study-grip-closed"/>
-                <path d="M-38 48h76" class="study-guide"/>
-              </g>
-              <text x="407" y="267" class="span-label">Pads touch block</text>
-              <path class="study-guide" d="M238 216h45m-6-5 6 5-6 5" stroke-width="2"/>
-            </g>
+            <path class="study-guide" d="M61 120v11h204v-11"/>
+            <circle class="stack-cursor" cx="61" cy="104" r="6.5" stroke="var(--detail-ink)" stroke-width="2" visibility="hidden"/>
           </svg>
-          <figcaption class="study-key">
-            <span><strong>Substage</strong>Across many frames, the arm lifts, carries, and stacks the block.</span>
-            <span><strong>Execution</strong>Between adjacent frames, the fingers close around the stationary block.</span>
+          <figcaption class="grasp-detail">
+            <p class="scale-label"><strong>Execution</strong>Adjacent frames</p>
+            <svg viewBox="0 0 240 76" role="img" aria-labelledby="grasp-title" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <title id="grasp-title">The two jaws close around the stationary block</title>
+              <g transform="translate(48 20)">
+                <use href="#study-cube" y="47" class="study-inbetweens"/><use href="#study-grip-open"/>
+              </g>
+              <path class="study-guide" d="M104 39h32m-5-4 5 4-5 4" stroke-width="2"/>
+              <g transform="translate(192 20)">
+                <use href="#study-cube" y="47" class="study-inbetweens"/><use href="#study-grip-closed"/>
+              </g>
+            </svg>
           </figcaption>
         </figure>
         <figure class="probe" aria-labelledby="probe-title">

@@ -1,0 +1,115 @@
+(() => {
+  const study = document.querySelector('.task-study');
+  if (!study) return;
+  const button = study.querySelector('.stack-playback');
+  const cursor = study.querySelector('.stack-cursor');
+  const poses = Array.from(study.querySelectorAll('.stack-pose'), group => ({
+    group,
+    upper: group.querySelector('[href="#arm-upper"]'),
+    forearm: group.querySelector('[href="#arm-fore"]'),
+    elbow: group.querySelectorAll('[href="#arm-bearing"]')[1],
+    block: group.querySelector('.study-inbetweens'),
+    tool: group.querySelector('.stack-tool'),
+    fingers: group.querySelectorAll('[href="#study-finger"]')
+  }));
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  const duration = 4400;
+  const cycleDuration = duration + 800; // Hold the completed stack before the next pickup.
+  let elapsed = 0;
+  let start = 0;
+  let request = null;
+  let wantsPlayback = !motion.matches;
+  let inView = !('IntersectionObserver' in window);
+
+  // Solve the illustrated two-link arm to keep the pads vertical and centered on the block.
+  function draw(pose, x, bottom, gap, clearance) {
+    const palmY = bottom - 47 - clearance;
+    const dx = x + 72, dy = palmY - 12 - 76;
+    const distance = Math.hypot(dx, dy);
+    const along = (86 ** 2 - 72 ** 2 + distance ** 2) / (2 * distance);
+    const rise = Math.sqrt(Math.max(0, 86 ** 2 - along ** 2));
+    const elbowX = -72 + (dx * along + dy * rise) / distance;
+    const elbowY = 76 + (dy * along - dx * rise) / distance;
+    const angle = (y, x) => Math.atan2(y, x) * 180 / Math.PI;
+    pose.upper.setAttribute('transform', `translate(-72 76) rotate(${angle(elbowY - 76, elbowX + 72)})`);
+    pose.forearm.setAttribute('transform', `translate(${elbowX} ${elbowY}) rotate(${angle(palmY - 12 - elbowY, x - elbowX)})`);
+    pose.elbow.setAttribute('x', elbowX);
+    pose.elbow.setAttribute('y', elbowY);
+    pose.block.setAttribute('x', x);
+    pose.block.setAttribute('y', bottom);
+    pose.tool.setAttribute('transform', `translate(${x} ${palmY})`);
+    pose.fingers[0].setAttribute('x', -gap);
+    pose.fingers[1].setAttribute('transform', `translate(${gap}) scale(-1 1)`);
+  }
+
+  function ease(time, from, to) {
+    const t = Math.max(0, Math.min(1, (time - from) / (to - from)));
+    return t * t * (3 - 2 * t);
+  }
+
+  function render(t) {
+    const grasp = ease(t, 1 / 12, 2 / 12);
+    draw(poses[0], -5, 96 - 48 * ease(t, 2 / 12, .34), 25 - 9 * grasp, 0);
+    draw(poses[1], -5 + 53 * ease(t, .34, .62), 48, 16, 0);
+    draw(poses[2], 48, 48 + 16 * ease(t, .62, .80), 16 + 9 * ease(t, .80, .90), 12 * ease(t, .90, 1));
+    const active = t < .34 ? 0 : t < .62 ? 1 : 2;
+    poses.forEach((pose, index) => pose.group.style.opacity = index === active || t === 1 ? '1' : '.48');
+    cursor.setAttribute('visibility', 'visible');
+    cursor.setAttribute('cx', 61 + 408 * t);
+  }
+
+  function tick(now) {
+    const previous = elapsed;
+    const time = Math.max(0, now - start);
+    elapsed = motion.matches ? Math.min(time, duration) : time % cycleDuration;
+    if (elapsed < duration || previous < duration) render(Math.min(elapsed / duration, 1));
+    if (motion.matches && elapsed === duration) {
+      request = null;
+      wantsPlayback = false;
+      button.textContent = 'Replay';
+      return;
+    }
+    request = requestAnimationFrame(tick);
+  }
+
+  function play() {
+    if (request !== null) return;
+    start = performance.now() - elapsed;
+    button.textContent = 'Pause';
+    request = requestAnimationFrame(tick);
+  }
+
+  function pause() {
+    if (request === null) return;
+    cancelAnimationFrame(request);
+    request = null;
+    button.textContent = 'Resume';
+  }
+
+  function syncPlayback() {
+    if (wantsPlayback && inView && !document.hidden) play();
+    else pause();
+  }
+
+  button.addEventListener('click', () => {
+    wantsPlayback = request === null;
+    if (wantsPlayback && motion.matches && elapsed >= duration) elapsed = 0;
+    if (wantsPlayback) play();
+    else pause();
+  });
+  button.hidden = false;
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.intersectionRatio === 0) inView = false;
+      else if (entry.intersectionRatio >= .5) inView = true;
+      syncPlayback();
+    }, {threshold:[0, .5]});
+    observer.observe(study);
+  }
+  motion.addEventListener('change', () => {
+    wantsPlayback = !motion.matches;
+    syncPlayback();
+  });
+  document.addEventListener('visibilitychange', syncPlayback);
+  syncPlayback();
+})();
