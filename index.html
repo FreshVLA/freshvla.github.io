@@ -10,11 +10,11 @@
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/site.css">
-  <link rel="stylesheet" href="assets/cover.css?v=4508e4fd">
+  <link rel="stylesheet" href="assets/cover.css?v=d93c2754">
   <link rel="stylesheet" href="assets/video-learning.css?v=929f2faa">
   <link rel="stylesheet" href="assets/benchmark-scene.css?v=466861ce">
   <script defer src="assets/site.js"></script>
-  <script defer src="assets/stack-motion.js"></script>
+  <script defer src="assets/stack-motion.js?v=4a51c72f"></script>
   <script defer src="assets/benchmark-scene.js?v=2ba63d20"></script>
   <script defer src="assets/cover-motion.js?v=427b3ac6"></script>
   <style>
@@ -110,13 +110,13 @@
           <header>
             <div class="stack-heading">
               <h3 id="blocks-heading">Stacking two blocks</h3>
-              <button type="button" class="stack-playback" aria-controls="stack-sequence" hidden>Play motion</button>
+              <button type="button" class="stack-playback" aria-controls="stack-sequence stack-detail" hidden>Play motion</button>
             </div>
             <p class="scale-label"><strong>Substage</strong>Across many frames</p>
           </header>
           <svg id="stack-sequence" viewBox="-30 -27 595 168" role="img" aria-labelledby="task-study-title" aria-describedby="task-study-desc" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <title id="task-study-title">Stacking two blocks at two temporal scales</title>
-            <desc id="task-study-desc">Three illustrative poses show the arm stacking a block. Black dots mark substage anchors. Green ticks show the frames between them. The two bold ticks mark the adjacent frames enlarged below.</desc>
+            <desc id="task-study-desc">Three illustrative poses show the arm stacking a block. Black dots mark substage anchors. Green ticks show the frames between them. The two bold ticks mark the adjacent frames compared below.</desc>
             <defs>
               <g id="study-cube" stroke-width="1.8">
                 <rect x="-16" y="-32" width="32" height="32" rx="1.6" fill="color-mix(in srgb,currentColor 15%,var(--surface))"/>
@@ -163,14 +163,6 @@
               <g id="study-finger" stroke="#758179" stroke-width="1.1">
                 <path d="M-6 11h5v5l-1 2v12h-4Z" fill="#474f4d"/>
                 <path d="M-2 20h2v10h-2Z" fill="var(--detail-ink)" stroke="none"/>
-              </g>
-              <g id="study-grip-open">
-                <use href="#study-palm"/>
-                <use href="#study-finger" x="-25"/><use href="#study-finger" transform="translate(25) scale(-1 1)"/>
-              </g>
-              <g id="study-grip-closed">
-                <use href="#study-palm"/>
-                <use href="#study-finger" x="-16"/><use href="#study-finger" transform="translate(16) scale(-1 1)"/>
               </g>
             </defs>
             <g class="stack-pose" transform="translate(65)">
@@ -219,8 +211,10 @@
               </defs>
               <use href="#six-frame-ticks"/><use href="#six-frame-ticks" x="204"/>
               <path d="M469 109v8" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
-              <path d="M95 107v12 M129 107v12" stroke-width="4" vector-effect="non-scaling-stroke"/>
-              <path d="M95 123v4h34v-4 M112 127v14" stroke-width="1.8"/>
+              <g class="stack-frame-pair" transform="translate(95)">
+                <path d="M0 107v12 M34 107v12" stroke-width="4" vector-effect="non-scaling-stroke"/>
+                <path d="M0 123v4h34v-4" stroke-width="1.8"/>
+              </g>
             </g>
             <g fill="currentColor" stroke="none">
               <circle cx="61" cy="104" r="4"/><circle cx="265" cy="104" r="4"/><circle cx="469" cy="104" r="4"/>
@@ -230,15 +224,27 @@
           </svg>
           <figcaption class="grasp-detail">
             <p class="scale-label"><strong>Execution</strong>Adjacent frames</p>
-            <svg viewBox="0 0 240 76" role="img" aria-labelledby="grasp-title" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-              <title id="grasp-title">The two jaws close around the stationary block</title>
-              <g transform="translate(48 20)">
-                <use href="#study-cube" y="47" class="study-inbetweens"/><use href="#study-grip-open"/>
+            <svg id="stack-detail" viewBox="0 -24 440 131" role="img" aria-labelledby="grasp-title" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <title id="grasp-title">Gripper and block in two consecutive frames of the stack</title>
+              <g class="stack-detail-frame" transform="translate(80)">
+                <path class="study-guide" d="M-51 97h128"/>
+                <use href="#study-cube" x="48" y="96"/>
+                <use href="#study-cube" x="-5" y="96" class="study-inbetweens"/>
+                <g class="stack-tool" transform="translate(-5 49)">
+                  <use href="#study-palm"/>
+                  <use href="#study-finger" x="-25"/><use href="#study-finger" transform="translate(25) scale(-1 1)"/>
+                </g>
               </g>
-              <path class="study-guide" d="M104 39h32m-5-4 5 4-5 4" stroke-width="2"/>
-              <g transform="translate(192 20)">
-                <use href="#study-cube" y="47" class="study-inbetweens"/><use href="#study-grip-closed"/>
+              <g class="stack-detail-frame" transform="translate(305)">
+                <path class="study-guide" d="M-51 97h128"/>
+                <use href="#study-cube" x="48" y="96"/>
+                <use href="#study-cube" x="-5" y="96" class="study-inbetweens"/>
+                <g class="stack-tool" transform="translate(-5 49)">
+                  <use href="#study-palm"/>
+                  <use href="#study-finger" x="-16"/><use href="#study-finger" transform="translate(16) scale(-1 1)"/>
+                </g>
               </g>
+              <path class="study-guide" d="M202 53h35m-5-4 5 4-5 4" stroke-width="2"/>
             </svg>
           </figcaption>
         </figure>

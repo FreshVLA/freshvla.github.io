@@ -3,15 +3,23 @@
   if (!study) return;
   const button = study.querySelector('.stack-playback');
   const cursor = study.querySelector('.stack-cursor');
+  const selectedPair = study.querySelector('.stack-frame-pair');
+  function gripParts(group) {
+    return {
+      block: group.querySelector('.study-inbetweens'),
+      tool: group.querySelector('.stack-tool'),
+      fingers: group.querySelectorAll('[href="#study-finger"]')
+    };
+  }
   const poses = Array.from(study.querySelectorAll('.stack-pose'), group => ({
     group,
     upper: group.querySelector('[href="#arm-upper"]'),
     forearm: group.querySelector('[href="#arm-fore"]'),
     elbow: group.querySelectorAll('[href="#arm-bearing"]')[1],
-    block: group.querySelector('.study-inbetweens'),
-    tool: group.querySelector('.stack-tool'),
-    fingers: group.querySelectorAll('[href="#study-finger"]')
+    ...gripParts(group)
   }));
+  const closeups = Array.from(study.querySelectorAll('.stack-detail-frame'), gripParts);
+  const frameSteps = 12;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const duration = 4400;
   const cycleDuration = duration + 800; // Hold the completed stack before the next pickup.
@@ -22,8 +30,8 @@
   let inView = !('IntersectionObserver' in window);
 
   // Solve the illustrated two-link arm to keep the pads vertical and centered on the block.
-  function draw(pose, x, bottom, gap, clearance) {
-    const palmY = bottom - 47 - clearance;
+  function drawArm(pose, state) {
+    const {x, palmY} = state;
     const dx = x + 72, dy = palmY - 12 - 76;
     const distance = Math.hypot(dx, dy);
     const along = (86 ** 2 - 72 ** 2 + distance ** 2) / (2 * distance);
@@ -35,6 +43,10 @@
     pose.forearm.setAttribute('transform', `translate(${elbowX} ${elbowY}) rotate(${angle(palmY - 12 - elbowY, x - elbowX)})`);
     pose.elbow.setAttribute('x', elbowX);
     pose.elbow.setAttribute('y', elbowY);
+    drawGrip(pose, state);
+  }
+
+  function drawGrip(pose, {x, bottom, palmY, gap}) {
     pose.block.setAttribute('x', x);
     pose.block.setAttribute('y', bottom);
     pose.tool.setAttribute('transform', `translate(${x} ${palmY})`);
@@ -47,11 +59,22 @@
     return t * t * (3 - 2 * t);
   }
 
+  function sample(t) {
+    const x = -5 + 53 * ease(t, .34, .62);
+    const bottom = 96 - 48 * ease(t, 2 / frameSteps, .34) + 16 * ease(t, .62, .80);
+    const gap = 25 - 9 * ease(t, 1 / frameSteps, 2 / frameSteps) + 9 * ease(t, .80, .90);
+    return {x, bottom, gap, palmY: bottom - 47 - 12 * ease(t, .90, 1)};
+  }
+
   function render(t) {
-    const grasp = ease(t, 1 / 12, 2 / 12);
-    draw(poses[0], -5, 96 - 48 * ease(t, 2 / 12, .34), 25 - 9 * grasp, 0);
-    draw(poses[1], -5 + 53 * ease(t, .34, .62), 48, 16, 0);
-    draw(poses[2], 48, 48 + 16 * ease(t, .62, .80), 16 + 9 * ease(t, .80, .90), 12 * ease(t, .90, 1));
+    drawArm(poses[0], sample(Math.min(t, .34)));
+    drawArm(poses[1], sample(Math.max(.34, Math.min(t, .62))));
+    drawArm(poses[2], sample(Math.max(t, .62)));
+
+    const frame = Math.min(Math.floor(t * frameSteps), frameSteps - 1);
+    drawGrip(closeups[0], sample(frame / frameSteps));
+    drawGrip(closeups[1], sample((frame + 1) / frameSteps));
+    selectedPair.setAttribute('transform', `translate(${61 + frame * 34})`);
     const active = t < .34 ? 0 : t < .62 ? 1 : 2;
     poses.forEach((pose, index) => pose.group.style.opacity = index === active || t === 1 ? '1' : '.48');
     cursor.setAttribute('visibility', 'visible');
